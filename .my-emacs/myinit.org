@@ -1,0 +1,1673 @@
+#+AUTHOR: Neal Haas
+#+STARTUP: content
+
+* Interface
+Disable EMACs Welcome screen and start maximized and start with only 1 buffer.
+Show the line number, column number and time.
+Do not wrap lines, show opposite parentheses.
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-message t)
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  (add-hook 'emacs-startup-hook (lambda () (delete-other-windows)) t)
+  (line-number-mode t)
+  (column-number-mode t)
+  (display-time)
+  (setq-default truncate-lines t)
+  (show-paren-mode t)               ;; Always highlight opposite parenthesis
+  (blink-cursor-mode 0)
+  (setq tab-width 2)
+  (fset 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+* Global Settings
+
+Load custom ELisp files in ~/.emacs.d/elisp/
+
+#+BEGIN_SRC emacs-lisp
+  ;; Look first in the directory ~/.emacs.d/elisp for elisp files
+  (setq load-path (cons (expand-file-name "elisp" (file-name-directory load-file-name)) load-path))
+#+END_SRC
+
+Enable Auto Revert Buffer to automatically reload buffer when the file changes on disk.
+Increase 'buffer' column width in buffer list view.
+Make the save files go to the same dir and not the dir of each file.
+
+#+BEGIN_SRC emacs-lisp
+  (global-auto-revert-mode 1)
+  (setq Buffer-menu-name-width 60)
+  (setq backup-directory-alist `(("." . "~/.emacs_saves")))
+  (setq-default fill-column 80)
+#+END_SRC
+
+Set the theme - this one works best for PuTTY imho
+#+BEGIN_SRC emacs-lisp
+  (load-theme 'tango-dark)
+#+END_SRC
+
+* Key Bindings
+** HideShow custom keybindings
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c <right>") 'hs-show-block)
+  (global-set-key (kbd "C-c <left>")  'hs-hide-block)
+  (global-set-key (kbd "C-c <up>")    'hs-hide-all)
+  (global-set-key (kbd "C-c <down>")  'hs-show-all)
+  ;; (local-set-key (kbd "C-c <right>") 'hs-show-block)
+  ;; (local-set-key (kbd "C-c <left>")  'hs-hide-block)
+  ;; (local-set-key (kbd "C-c <up>")    'hs-hide-all)
+  ;; (local-set-key (kbd "C-c <down>")  'hs-show-all)
+
+  ;; (global-set-key (kbd "C-+") 'toggle-hiding)
+  ;; (global-set-key (kbd "C-\\") 'toggle-selective-display)
+#+END_SRC
+
+** Global Stuff
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x C-b") 'electric-buffer-list)
+  (global-set-key [f2]            'help)
+  (global-set-key [f3]            'my-revert-buffer)
+  ;; (global-set-key [f4]            'my-unhighlight-changes)
+  (global-set-key [f5]            'align-repeat)
+  (global-set-key [f6]            'search-all-buffers)
+  (global-set-key [f7]            'query-swap-regexp)
+  (global-set-key [f8]            'ffap)
+  ;; (global-set-key [f9]            'cout)
+  ;; (global-set-key [f10]           'design-sync-diff)
+  ;; (global-set-key [f11]           'design-sync-check-out-cancel)
+  ;; (global-set-key [f12]           'cin)
+  ;; (global-set-key (kbd "<C-f10>") 'design-sync-diff-versions)
+  ;; (global-set-key (kbd "<C-f12>") 'my-unhighlight-changes)
+  (global-set-key (kbd "C-x t")   'run-current-file)
+  (global-set-key (kbd "C-x |")   'toggle-window-split)
+  (global-set-key (kbd "C-s")     'isearch-forward-regexp)
+  (global-set-key (kbd "C-r")     'isearch-backward-regexp)
+  (global-set-key (kbd "C-c f")   'toggle-maximize-buffer)
+  (global-set-key (kbd "C-c l")   'org-store-link)
+  (global-set-key (kbd "C-c a")   'org-agenda)
+  (global-set-key (kbd "C-c c")   'org-capture)
+  (global-set-key (kbd "RET")     'my-auto-indent-method-maybe)
+#+END_SRC
+
+#+RESULTS:
+: org-capture
+
+* Packages
+** Undo tree visualization
+#+BEGIN_SRC emacs-lisp
+  (require 'undo-tree)
+  (global-undo-tree-mode 1)
+#+END_SRC
+
+** Visual Regexp
+#+BEGIN_SRC emacs-lisp
+  (require 'visual-regexp)
+  (define-key global-map (kbd "C-x h") 'vr/replace)
+  (define-key global-map (kbd "C-h") 'vr/query-replace)
+#+END_SRC
+
+** SmartParens
+#+BEGIN_SRC emacs-lisp
+  ;; (require 'smartparens-config)
+  (smartparens-global-mode t)
+#+END_SRC
+
+** Highlight Changes
+Highlight all changes in buffers.
+#+BEGIN_SRC emacs-lisp
+  ;; (require 'hilit-chg)
+  ;;
+  ;; ;; Unhighlight
+  ;; (defun my-unhighlight-changes ()
+  ;;   "Remove highlighting from entire file."
+  ;;   (interactive)
+  ;;   (highlight-changes-remove-highlight (point-min) (point-max)))
+#+END_SRC
+
+** HideShow
+#+BEGIN_SRC emacs-lisp
+  (load-library "hideshow")
+#+END_SRC
+
+** Org-Journal
+=org-journal= maintains a set of files, where each file represents a
+day. Convenient bindings allow the creation of journal records in the current
+daily file and search within all records or specified time intervals. All
+records can be browsed and searched from the Emacs Calendar for convenience. All
+entries in a specified TODO state will be carried over to the next
+day. Optionally, the journal can also be encrypted.
+#+BEGIN_SRC emacs-lisp
+  (require 'org-journal)
+#+END_SRC
+
+** Magit
+Magit is an interface to the version control system Git, implemented as an Emacs
+package. Magit aspires to be a complete Git porcelain. While we cannot (yet)
+claim that Magit wraps and improves upon each and every Git command, it is
+complete enough to allow even experienced Git users to perform almost all of
+their daily version control tasks directly from within Emacs. While many fine
+Git clients exist, only Magit and Git itself deserve to be called porcelains.
+
+On Ubuntu 16.04.01, it can be installed using:
+#+BEGIN_SRC sh
+  apt-get install magit
+#+END_SRC
+
+and loaded into Emacs using:
+#+BEGIN_SRC emacs-lisp
+  (require 'magit)
+  (global-set-key (kbd "C-x g") 'magit-status)
+
+  (with-eval-after-load 'info
+    (info-initialize)
+    (add-to-list 'Info-directory-list
+                 (expand-file-name "site-lisp/magit/Documentation/" (file-name-directory load-file-name))))
+#+END_SRC
+
+Adding custom functions for QCOM Gerrit, inspired by this [[https://emacs.stackexchange.com/questions/19672/magit-gerrit-push-to-other-branch][Magit + gerrit - push to other branch]]
+
+#+BEGIN_SRC emacs-lisp
+  (defun magit-format-qcom-gerrit-refspec ()
+    (interactive)
+    ;; Can't find a more reliable way to find the name of the Branch, as shown on
+    ;; Gerrit page. It should resolve to something like 'sec-userspace.lnx.12.0'
+    (setq gerrit-branch-name
+          (shell-command-to-string "git branch | grep '[0-9][.][0-9]' | sed 's/ //g' | tr -d '\n' | sed 's/-temp.*//' "))
+    (concat "HEAD:refs/for/" gerrit-branch-name))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  ;; 04/28/21 This tries to format the `git push` command so that commits end up
+  ;; in the correct Gerrit.
+  (defun magit-push-to-qcom-gerrit ()
+    (interactive)
+    ;; Note: 'quic' should be configured in the git config to point to the correct
+    ;; URL automatically
+    ;; (message (concat "git " "push quic " (magit-format-qcom-gerrit-refspec))))
+    (magit-shell-command (concat "git " "push quic " (magit-format-qcom-gerrit-refspec))))
+#+END_SRC
+
+Next, I added it to push menu:
+#+BEGIN_SRC emacs-lisp
+  (transient-append-suffix 'magit-push "p"
+    '("q" (lambda () (concat "Push to QCOM gerrit (git push quic "
+                             (magit-format-qcom-gerrit-refspec) ")" ) )
+      magit-push-to-qcom-gerrit))
+#+END_SRC
+
+These two forms are in my init file.
+
+And that's it! Now I can use =P= =m= to push to gerrit.
+
+** Projectile
+https://github.com/bbatsov/projectile
+
+Projectile is a project interaction library for Emacs. Its goal is to provide a
+nice set of features operating on a project level without introducing external
+dependencies (when feasible). For instance - finding project files has a
+portable implementation written in pure Emacs Lisp without the use of GNU find
+(but for performance sake an indexing mechanism backed by external commands
+exists as well).
+
+Projectile tries to be practical - portability is great, but if some external
+tools could speed up some task substantially and the tools are available,
+Projectile will leverage them.
+
+This library provides easy project management and navigation. The concept of a
+project is pretty basic - just a folder containing special file. Currently git,
+mercurial, darcs and bazaar repos are considered projects by default. So are
+lein, maven, sbt, scons, rebar and bundler projects. If you want to mark a
+folder manually as a project just create an empty .projectile file in it.
+
+On Ubuntu 16.04.01, it can be installed using:
+#+BEGIN_SRC sh
+  apt-get install elpa-projectile
+#+END_SRC
+
+and loaded into Emacs using:
+#+BEGIN_SRC emacs-lisp
+  (projectile-global-mode t)
+  ;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map) ;; lower case 's' stands for Super
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+#+END_SRC
+
+** Which-Key
+which-key is a minor mode for Emacs that displays the key bindings following
+your currently entered incomplete command (a prefix) in a popup. For example,
+after enabling the minor mode if you enter C-x and wait for the default of 1
+second the minibuffer will expand with all of the available key bindings that
+follow C-x (or as many as space allows given your settings). This includes
+prefixes like C-x 8 which are shown in a different face. Screenshots of what the
+popup will look like are included below. which-key started as a rewrite of
+guide-key-mode, but the feature sets have diverged to a certain extent.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'which-key)
+  (which-key-mode)
+#+END_SRC
+
+** Ag (Silver Searcher)
+Ag.el allows you to search using ag from inside Emacs. You can filter by file
+type, edit results inline, or find files.
+
+Ag.el tries very hard to be Do-What-I-Mean, and will make intelligent
+suggestions about what to search and which directories to search in.
+
+Documentation: http://agel.readthedocs.org/en/latest/index.html
+
+#+BEGIN_SRC sh
+  apt-get install silversearcher-ag-el
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (require 'ag)
+  (setq ag-highlight-search t)
+#+END_SRC
+
+** P4 (Emacs Perforce Integration)
+p4.el integrates the Perforce software version management system into GNU
+Emacs. It provides Emacs interfaces that map directly to Perforce commands, and
+so is most useful if you are already familiar with Perforce and want to access
+it from Emacs. (If, on the other hand, you are already familiar with the Emacs
+VC interface, and want to add Perforce as a VC backend, then you might look at
+Jonathan Kamens’ VC-P4.)
+
+#+BEGIN_SRC emacs-lisp
+  (require 'p4)
+#+END_SRC
+
+** Magit Gerrit
+Magit plugin for Gerrit Code Review
+
+#+BEGIN_SRC emacs-lisp
+  (require 'magit-gerrit)
+
+  ;; ;; if remote url is not using the default gerrit port and
+  ;; ;; ssh scheme, need to manually set this variable
+  ;; (setq-default magit-gerrit-ssh-creds "myid@gerrithost.org")
+
+  ;; ;; if necessary, use an alternative remote instead of 'origin'
+  ;; (setq-default magit-gerrit-remote "gerrit")
+
+  ;; ;; if your remote contains too much reviews, itcan become slow,
+  ;; ;; and you can choose to fetch only your watched reviews.
+  ;; (setq-default magit-gerrit-extra-options "is:watched is:owner")
+
+  ;; ;; display review label header, off by default
+  ;; (setq-default magit-gerrit-show-review-labels t)
+
+  ;; ;; if your project uses custom labels you can enable them
+  ;; ;; by adding custom labels to to the list, syntax is
+  ;; ;; (add-to-list (list "Review-label-fullname-as-displayed-in-Gerrit-UI"
+  ;; ;;                    "2-char-abbreviation-for-header") t)
+  ;; (add-to-list 'magit-gerrit-review-labels (list "Zuul-Gate" "ZG") t)
+  ;; (add-to-list 'magit-gerrit-review-labels (list "StaticAnalysis" "SA") t)
+#+END_SRC
+
+** clang-format
+Clang-format emacs integration for use with C/Objective-C/C++.
+https://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format.el
+
+Expected that clang-format-3.9 is installed
+#+BEGIN_SRC sh
+  sudo apt-get install clang-format-3.9
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (require 'clang-format)
+  (global-set-key (kbd "C-c i") 'clang-format-region)
+  (global-set-key (kbd "C-c u") 'clang-format-buffer)
+
+  ;; clang-format (the executable) needs to find '.clang-format' in the current
+  ;; directory or any parent directory. This method will copy the format file to
+  ;; the current directory, then call clang-format-region, then delete the
+  ;; file. This is exactly what the 'cformat' bash function does. The advantage of
+  ;; this is that you never need to leave Emacs, nor do you need to figure out how
+  ;; to find the file of the current buffer.
+  (defun wrap-clang-format-region (orig-fun &rest args)
+    ;; (message "clang-format-region called with args %S" args)
+    (let((src-file "/usr2/nhaas/format/ABC.clang-format")
+         (dst-file ".clang-format"))
+      (copy-file src-file dst-file "overwrite")
+      (apply orig-fun args)
+      (delete-file dst-file)
+      ))
+
+  (advice-add 'clang-format-region :around #'wrap-clang-format-region)
+
+#+END_SRC
+
+#+RESULTS:
+
+Point to the binary
+#+BEGIN_SRC emacs-lisp
+ (setq clang-format-executable "/usr/bin/clang-format-3.9")
+#+END_SRC
+
+I find this more elegant that explicitly checking major-mode, and it has the
+advantage that you can disable the before-save-hook locally for each buffer with
+M-: (remove-hook 'before-save-hook MY-HOOK-FUNC 'local) without affecting any
+other buffers.
+
+#+BEGIN_SRC emacs-lisp
+  ;; (add-hook 'c-mode-common-hook (lambda () (add-hook 'before-save-hook 'clang-format-buffer nil 'local)))
+#+END_SRC
+
+# ** clang-format+
+# clang-format+ is a small package aimed at improving the user experience of using
+# clang-format in Emacs.
+
+# The existing package (clang-format.el) provides a wrapper around the CLI
+# allowing its users to format buffers and regions. The workflow it suggests is a
+# bit too manual, so custom before-save-hooks and then minor-modes come to
+# play. clang-format+ joins all these customizations in order to remove all the
+# duplicated ad-hocs.
+
+# clang-format+ defines a minor mode clang-format+-mode, which applies
+# clang-format on save. It can also apply clang-format to the modified parts of
+# the region only and try to be smart about it.
+
+# #+BEGIN_SRC emacs-lisp
+#   (require 'clang-format+)
+#   (add-hook 'c-mode-common-hook #'clang-format+-mode)
+# #+END_SRC
+
+# #+RESULTS:
+# | hs-minor-mode | clang-format+-mode |
+
+** dumb-jump
+
+#+BEGIN_SRC emacs-lisp
+  (require 'xref)
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+#+END_SRC
+
+#+RESULTS:
+| dumb-jump-xref-activate | etags--xref-backend |
+
+** Plant UML
+
+*** Multiple setups for rendering Plant UML
+**** Using Java
+***** Prerequisite - Jave Runtime Environment (JRE)
+1.  Overview
+
+The Java Runtime Environment (JRE) is required to run Java programs. Nowadays there are many JRE
+packages available from a variety of projects and companies, but the two most popular on Ubuntu are
+OpenJDK and Oracle HotSpot.  source: https://ubuntu.com/tutorials/install-jre#1-overview
+
+2. Installing OpenJDK JRE
+
+Ubuntu offers the default-jre package, which is regularly updated to ship the latest version of the
+current OpenJDK JRE in Long Term Support (LTS). The default-jre is an excellent choice for most
+situations, thanks to the outstanding track of backwards compatibility of the Java Virtual Machine.
+
+To install the OpenJDK JRE, we run:
+#+BEGIN_SRC sh
+  sudo apt install default-jre-headless
+#+END_SRC
+
+NB: I opted for the 'headless' version since I don't anticipate needing to run any Java program with
+GUI needs. See [[https://packages.debian.org/sid/openjdk-8-jre-headless][openjdk-8-jre-headless packae page]]
+
+We can check if OpenJDK JRE was properly installed by running:
+#+BEGIN_SRC sh
+  java -version
+#+END_SRC
+
+***** Install
+1. Download plantuml.jar from [[https://plantuml.com/download][official download page]] and save it at /home/you/path/to/plantuml.jar
+   [[https://github.com/plantuml/plantuml/releases/][From GitHub releases]], you can download [[https://github.com/plantuml/plantuml/releases/download/v1.2022.1/plantuml-1.2022.1.jar][plantuml.1.2022.1.jar]]
+   #+BEGIN_SRC sh
+     wget https://github.com/plantuml/plantuml/releases/download/v1.2022.1/plantuml-1.2022.1.jar ~/Downloads/plantuml.jar
+   #+END_SRC
+2. Install plantuml-mode via melpa.
+   =M-x package-install<RET>=
+3. Configure for Java
+   #+BEGIN_SRC emacs-lisp
+     (setq plantuml-jar-path "~/Downloads/plantuml.jar")
+     (setq plantuml-default-exec-mode 'jar)
+   #+END_SRC
+4. Org-Mode setup for Java
+   #+BEGIN_SRC emacs-lisp
+     (setq org-plantuml-jar-path (eval 'plantuml-jar-path))
+   #+END_SRC
+
+**** Using executable
+:PROPERTIES:
+:header-args: :tangle no
+:END:
+This is an _ALTERNATE_ way to render Plant UML. It is not tangled (exported) to [[file:myinit.el][myinit.el]] during
+=org-babel-load-file=.
+
+1. Install
+#+BEGIN_SRC sh
+  apt install plantuml
+#+END_SRC
+
+2.  Configure
+#+BEGIN_SRC emacs-lisp
+  (setq plantuml-executable-path "usr/bin/plantuml")
+  (setq plantuml-default-exec-mode 'executable)
+#+END_SRC
+
+*** Helper functions
+Taken from [[https://gist.github.com/rpl/547521][plantuml_helpers.el]]
+#+BEGIN_SRC emacs-lisp
+  ;; ;; Inline Image (iimage) built into Emacs
+  ;; ;; (require 'iimage)
+  ;; (autoload 'iimage-mode "iimage" "Support Inline image minor mode." t)
+  ;; (autoload 'turn-on-iimage-mode "iimage" "Turn on Inline image minor mode." t)
+  ;; (add-to-list 'iimage-mode-image-regex-alist '("@startuml\s+\\(.+\\)" . 1))
+
+  ;; Rendering plantuml
+  (defun plantuml-render-buffer ()
+    (interactive)
+    (message "PLANTUML Start rendering")
+    (shell-command (concat "java -jar ~/Downloads/plantuml.jar "
+                           buffer-file-name))
+    (message (concat "PLANTUML Rendered:  " (buffer-name))))
+
+  ;; Image reloading
+  (defun reload-image-at-point ()
+    (interactive)
+    (message "reloading image at point in the current buffer...")
+    (image-refresh (get-text-property (point) 'display)))
+
+  ;; Image resizing and reloading
+  (defun resize-image-at-point ()
+    (interactive)
+    (message "resizing image at point in the current buffer123...")
+    (let* ((image-spec (get-text-property (point) 'display))
+           (file (cadr (member :file image-spec))))
+      (message (concat "resizing image..." file))
+      (shell-command (format "convert -resize %d %s %s "
+                             (* (window-width (selected-window)) (frame-char-width))
+                             file file))
+      (reload-image-at-point)))
+#+END_SRC
+
+*** Finally, require Plant UML Mode
+#+BEGIN_SRC emacs-lisp
+  (require 'plantuml-mode)
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
+#+END_SRC
+
+* Modes
+** C
+*** Set custom C style
+https://www.gnu.org/software/emacs/manual/html_node/ccmode/Adding-Styles.html
+#+BEGIN_SRC emacs-lisp
+  (c-add-style "ssg"
+               '("linux"              ;; inherit from linux C style
+                 (c-basic-offset . 4) ;; 4 spaces offset instead of 8
+                 (case-label     . 4) ;; 4 spaces offset instead of 0
+                 ;; the following commented items may not be needed?
+                 ;; (c-offsets-alist . (
+                 ;;                          (block-close . 0)
+                 ;;                          (brace-list-close . 0)
+                 ;;                          (brace-list-entry . 0)
+                 ;;                          (brace-list-intro . +)
+                 ;;                          (defun-block-intro . +)
+                 ;;                          (defun-close . 0)
+                 ;;                          (defun-open . 0)
+                 ;;                          (label . 0)
+                 ;;                          (statement . 0)
+                 ;;                          (statement-block-intro . +)
+                 ;;                          (topmost-intro . 0)
+                 ;;                          )
+                 ;;                       )
+                 )
+               )
+
+#+END_SRC
+
+*** Automatically nesting next line using brace return
+from StackOverflow: https://stackoverflow.com/questions/23840753/elisp-automatically-nesting-next-line-using-brace-return
+
+I want to be able to type "{" then hit "ENTER" and have the next line be ready for whatever is nested in the braces. For example, if I have the following line:
+#+BEGIN_SRC C
+  public void method()
+#+END_SRC
+
+and I type "{" then hit return I should get this:
+
+#+BEGIN_SRC C
+  public void method() {
+      // indentation applied, no additional tabbing necessary
+  }
+#+END_SRC
+
+Solution:
+
+I have something similar in my emacs config which I have been using for a
+while. It calls 'newline-and-indent twice then moves the point one line up
+before indenting correctly. Here is the snippet of code to do this from my
+config file:
+
+#+BEGIN_SRC emacs-lisp
+  ;; auto indent on opening brace
+  (require 'cc-mode)
+  (defun my-auto-indent-method ()
+    "Automatically indent a method by adding two newlines.
+  Puts point in the middle line as well as indent it by correct amount."
+    (interactive)
+    (newline-and-indent)
+    (newline-and-indent)
+    (forward-line -1)
+    (c-indent-line-or-region))
+
+  (defun my-auto-indent-method-maybe ()
+    "Check if point is at a closing brace then auto indent."
+    (interactive)
+    (let ((char-at-point (char-after (point))))
+      (if (char-equal ?} char-at-point)
+          (my-auto-indent-method)
+        (newline-and-indent))))
+
+  ;; (define-key c-mode-map (kbd "RET") 'my-auto-indent-method-maybe)
+#+END_SRC
+
+** Assign modes to file types
+setup files ending in “.csv” to open in text-mode
+setup files ending in “.*csh” to open in csh-mode
+setup files ending in “.*csh” to open in csh-mode
+setup files ending in “.f” to open in text-mode  Who uses Fortran anyways?
+Any files that end in ".v", .dv or .sv should be in verilog mode
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.log\\'"    . text-mode))
+  (add-to-list 'auto-mode-alist '("\\.csv\\'"    . text-mode))
+  (add-to-list 'auto-mode-alist '("\\.*csh\\'"   . sh-mode))
+  (add-to-list 'auto-mode-alist '("\\.*shrc\\'"  . sh-mode))
+  (add-to-list 'auto-mode-alist '("\\.f\\'"      . text-mode))
+  (add-to-list 'auto-mode-alist '("\\.[ds]?v\\'" . verilog-mode))
+  (add-to-list 'auto-mode-alist '("\\.bp\\'"     . js-mode))  ;; Android build system
+  (add-to-list 'auto-mode-alist '("\\.api\\'"    . python-mode))  ;; SCons file for including *.h
+#+END_SRC
+
+** Org-Mode
+Custom changes for using Org Mode.
+#+BEGIN_SRC emacs-lisp
+  (custom-set-variables
+   '(org-cycle-emulate-tab nil)
+   '(org-hide-leading-stars t)
+   '(org-log-into-drawer t)
+   '(org-startup-folded (quote overview))
+   '(org-startup-indented t)
+   '(org-tags-column -100) )
+#+END_SRC
+
+Find all *.org files in the Org directory
+#+BEGIN_SRC emacs-lisp
+  (custom-set-variables
+   '(org-directory "~/Documents/org")
+   '(org-agenda-files (list org-directory)) )
+#+END_SRC
+
+As of Org Mode 9.2, I can no longer TAB-complete src-code block abbreviation '<s'. Org mode now
+provides some built-in template function that can be called with `C-c C-,`, but that doesn't work
+across PuTTY + tmux for some reason. Instead, I found this solution to be quite helpful
+http://wenshanren.org/?p=334.
+#+BEGIN_SRC emacs-lisp
+  (defun org-insert-src-block (src-code-type)
+    "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
+    (interactive
+     (let ((src-code-types
+            '("emacs-lisp" "python" "C" "sh" "java" "js" "clojure" "C++" "css"
+              "calc" "asymptote" "dot" "gnuplot" "ledger" "lilypond" "mscgen"
+              "octave" "oz" "plantuml" "R" "sass" "screen" "sql" "awk" "ditaa"
+              "haskell" "latex" "lisp" "matlab" "ocaml" "org" "perl" "ruby"
+              "scheme" "sqlite")))
+       (list (ido-completing-read "Source code type: " src-code-types))))
+    (progn
+      (newline-and-indent)
+      (insert (format "#+BEGIN_SRC %s\n" src-code-type))
+      (newline-and-indent)
+      (insert "#+END_SRC\n")
+      (previous-line 2)
+      (org-edit-src-code)))
+#+END_SRC
+
+Call =set-fill-column= in the =org-mode-hook=
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook
+            (lambda ()
+              ;; Fill paragraphs to 100 character
+              (set-fill-column 100)
+              ;; keybinding for editing source code blocks
+              (local-set-key (kbd "C-c s e")
+                             'org-edit-src-code)
+              ;; keybinding for inserting code blocks
+              (local-set-key (kbd "C-c s i")
+                             'org-insert-src-block)
+              ))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-refile-targets '(((concat org-directory "/projects.org") :maxlevel . 3)
+                             ((concat org-directory "/goals.org") :maxlevel . 3)))
+#+END_SRC
+
+The following customization sets a default target file for notes.
+#+BEGIN_SRC emacs-lisp
+  (setq org-default-notes-file (concat org-directory "/gtd.org"))
+#+END_SRC
+
+To configure "native fontification" (as in the above screenshot), set the following in your .emacs file:
+#+BEGIN_SRC emacs-lisp
+  ;; fontify code in code blocks
+  (setq org-src-fontify-natively t)
+#+END_SRC
+
+Define these faces, in your .emacs file, before requiring Org (if you don't have your own color theme):
+#+BEGIN_SRC emacs-lisp
+  (defface org-block-begin-line
+    '((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF")))
+    "Face used for the line delimiting the begin of source blocks.")
+
+  (defface org-block-background
+    '((t (:background "#FFFFEA")))
+    "Face used for the source block background.")
+
+  (defface org-block-end-line
+    '((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF")))
+    "Face used for the line delimiting the end of source blocks.")
+#+END_SRC
+
+# Set org-src-fontify-natively to non-nil to turn on native code
+# fontification in the Org buffer. Fontification of ‘src’ code blocks
+# can give visual separation of text and code on the display page. To
+# further customize the appearance of org-block for specific
+# languages, customize org-src-block-faces.
+# #+BEGIN_SRC emacs-lisp
+#   (require 'color)
+#   (set-face-attribute 'org-block nil :background (color-darken-name (face-attribute 'default :background) 3))
+#   (setq org-src-block-faces '(("emacs-lisp" (:background "#EEE2FF"))
+#                               ("python" (:background "#E5FFB8"))))
+# #+END_SRC
+
+** Shell Mode
+# Load csh-mode.el from load-path, if possible
+# #+BEGIN_SRC emacs-lisp
+#   (autoload 'sh-set-shell-hook "csh-mode" "Custom [T]CSH mode" t)
+# #+END_SRC
+
+# Shell scripts should not
+# #+BEGIN_SRC emacs-lisp
+#   (setq sh-basic-offset 0)
+# #+END_SRC
+
+** Verilog Mode
+Load verilog mode only when needed
+#+BEGIN_SRC emacs-lisp
+  (autoload 'verilog-mode "verilog-mode" "Verilog mode" t )
+#+END_SRC
+# Convert all tabs to spaces upon save
+# #+BEGIN_SRC emacs-lisp
+#   (add-hook 'verilog-mode-hook
+#             '(lambda () (add-hook 'write-file-functions
+#                                   (lambda() (untabify (point-min) (point-max)) nil))))
+# #+END_SRC
+
+** Perl Mode
+
+#+BEGIN_SRC emacs-lisp
+  (setq perl-indent-parens-as-block t)
+  (setq perl-indent-level 2)
+#+END_SRC
+
+** TCL Mode
+
+#+BEGIN_SRC emacs-lisp
+  (setq tcl-indent-level 2)
+#+END_SRC
+
+** Ruby Mode
+Enhanced Ruby mode
+#+BEGIN_SRC emacs-lisp
+  ;; (add-to-list 'load-path (expand-file-name "elisp/enh-ruby-mode.el" (file-name-directory load-file-name))) ; must be added after any path containing old ruby-mode
+  ;; (autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
+  ;; (add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
+  ;; (add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
+
+
+  ;; (setq enh-ruby-program "/pkg/qct/software/ruby/2.0.0-p247/bin/ruby") ; so that still works if ruby points to ruby1.8
+
+  ;;(add-hook 'ruby-mode-hook 'robe-mode)
+  ;;(add-hook 'ruby-mode-hook 'ac-robe-setup)
+#+END_SRC
+
+When folding, take these delimiters into consideration
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'hs-special-modes-alist
+               '(ruby-mode
+                 "\\(class\\|def\\|do\\|if\\)" "\\(end\\)" "#"
+                 (lambda (arg) (ruby-end-of-block)) nil))
+#+END_SRC
+
+** dired Mode
+Re-assign 'e' to run ediff-buffers on marked files. Taken from https://oremacs.com/2017/03/18/dired-ediff/
+#+BEGIN_SRC emacs-lisp
+  (defun ora-ediff-files ()
+    (interactive)
+    (let ((files (dired-get-marked-files))
+          (wnd (current-window-configuration)))
+      (if (<= (length files) 2)
+          (let ((file1 (car files))
+                (file2 (if (cdr files)
+                           (cadr files)
+                         (error "only 1 file marked"))))
+            (if (file-newer-than-file-p file1 file2)
+                (ediff-files file2 file1)
+              (ediff-files file1 file2)))
+        (error "no more than 2 files should be marked"))))
+
+  (defun my-dired-mode-setup ()
+    "to be run as hook for `dired-mode'."
+    (define-key dired-mode-map "e" 'ora-ediff-files))
+#+END_SRC
+
+** CSV Mode
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
+  (autoload 'csv-mode "csv-mode"
+    "Major mode for editing comma-separated value files." t)
+#+END_SRC
+
+** YAML Mode
+NAME
+yaml-mode - Simple major mode to edit YAML file for emacs
+
+REQUIREMENTS
+Emacs 24.1
+
+SYNOPSIS
+To install, just drop this file into a directory in your
+`load-path' and (optionally) byte-compile it.  To automatically
+handle files ending in '.yml', add something like:
+
+#+BEGIN_SRC emacs-lisp
+  (require 'yaml-mode)
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+#+END_SRC
+
+to your .emacs file.
+
+Unlike python-mode, this mode follows the Emacs convention of not
+binding the ENTER key to `newline-and-indent'.  To get this
+behavior, add the key definition to `yaml-mode-hook':
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'yaml-mode-hook
+            '(lambda ()
+               (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+#+END_SRC
+
+** Evil Mode
+
+Evil is an extensible vi layer for Emacs. It emulates the main features of
+Vim, and provides facilities for writing custom extensions. Also see our page
+on EmacsWiki.
+
+*** Invoke Evil Mode
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path (expand-file-name "evil" (file-name-directory load-file-name)))
+
+  ;; The following solves the issue where TAB doesn't map to org-cycle in emacs
+  ;; -nw. It is necessary for this to occur *before* (require 'evil). See:
+  ;; https://stackoverflow.com/questions/22878668/emacs-org-mode-evil-mode-tab-key-not-working
+  (setq evil-want-C-i-jump nil)
+
+  (require 'evil)
+  (evil-mode 1)
+
+  ;; Due to the limitations of TTY, where C-i is interpreted at TAB, I opted to take
+  ;; the easy road and simply re-map jump forward/back key chords to something
+  ;; else. See above. The alternative (convince xterm to escape all Ctrl + Meta key
+  ;; sequences) may not be possible. See:
+  ;; https://emacs.stackexchange.com/questions/220/how-to-bind-c-i-as-different-from-tab
+  (define-key evil-normal-state-map (kbd "M-i") 'evil-jump-forward)
+  (define-key evil-normal-state-map (kbd "M-o") 'evil-jump-backward)
+#+END_SRC
+
+#+RESULTS:
+: evil-jump-backward
+
+*** Plug-ins
+
+Since I cannot access github / the internet directly, I download the tarballs
+of the Plug-ins and move them to the loadpath.
+
+To add all of the descendant directories of a directory DIR to your ‘load-path’,
+bind variable ‘default-directory’ to DIR and then invoke function
+‘normal-top-level-add-subdirs-to-load-path’, as follows:
+#+BEGIN_SRC emacs-lisp
+  (let ((default-directory  (expand-file-name "evil-lib/" (file-name-directory load-file-name))))
+    (normal-top-level-add-subdirs-to-load-path))
+#+END_SRC
+
+**** evil-surround
+https://github.com/emacs-evil/evil-surround
+#+BEGIN_SRC emacs-lisp
+  (require 'evil-surround)
+  (global-evil-surround-mode 1)
+#+END_SRC
+
+**** evil-nerd-commenter
+https://github.com/redguardtoo/evil-nerd-commenter
+#+BEGIN_SRC emacs-lisp
+  (require 'evil-nerd-commenter)
+  (evilnc-default-hotkeys nil t)
+  ;; Permanantly use '//'-style comments.
+  ;; This can be dynamically toggled with c-toggle-comment-style =M-x C-c C-k=
+  (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
+#+END_SRC
+
+**** evil-numbers
+https://github.com/cofi/evil-numbers
+#+BEGIN_SRC emacs-lisp
+  (require 'evil-numbers)
+  (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
+  (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
+
+  ;; or only in evil’s normal state:
+  ;; (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
+  ;; (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
+#+END_SRC
+
+**** evil-org
+https://github.com/Somelauw/evil-org-mode
+
+This package depends on 'let-alist' which isn't included in Emacs 24, but is in
+Emacs 25. So, I needed to install in manually from
+https://elpa.gnu.org/packages/let-alist.html and put it in ~/.emacs.d/elisp/let-alist.el
+
+#+BEGIN_SRC emacs-lisp
+  (require 'evil-org)
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
+#+END_SRC
+
+**** evil-smartparens
+Evil smartparens is a minor mode which makes evil play nice with smartparens.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'evil-smartparens)
+  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+#+END_SRC
+
+*** Other
+**** Define defun text object
+Taken lovingly from https://github.com/emacs-evil/evil/issues/874#issuecomment-315290644
+#+BEGIN_SRC emacs-lisp
+  (evil-define-text-object evgeni-inner-defun (count &optional beg end type)
+    (save-excursion
+      (mark-defun)
+      (evil-range (region-beginning) (region-end) type :expanded t)))
+
+  (define-key evil-inner-text-objects-map "m" 'evgeni-inner-defun)
+  (define-key evil-outer-text-objects-map "m" 'evgeni-inner-defun)
+#+END_SRC
+
+
+** Rustic
+
+** LSP Mode
+Super key 's-' keybindings don't really work over PuTTY. I found this article on
+StackOverflow with a similar issue:
+https://emacs.stackexchange.com/questions/55199/what-are-these-prefix-commands-that-start-with-s-l
+
+#+BEGIN_SRC emacs-lisp
+  ;; (setq lsp-keymap-prefix "C-c C-l")
+  ;; (global-set-key (kbd "C-c C-l") 'lsp-keymap-prefix)
+  ;; (define-key evil-normal-state-map (kbd "l") '(kbd "C-x @ s l"))
+  ;; (define-key evil-normal-state-map (kbd "g l") event-apply-super-modifier)
+  ;; (define-key evil-normal-state-map (kbd "g s") '(kbd "C-x @ s"))
+  ;; (define-key evil-normal-state-map (kbd "g s") help-map))
+  ;; (global-set-key (kbd "C-c C-s") (lookup-key global-map (kbd "C-x @ s")))
+#+END_SRC
+
+#+RESULTS:
+: 2
+
+* Universal
+** Repeating align-regexp [fn:1]
+Arguably, for daily use, it’s better to define some adhoc align command, e.g.
+
+#+BEGIN_SRC emacs-lisp
+  (defun align-repeat (start end regexp)
+    "Repeat alignment with respect to the given regular expression."
+    (interactive "r\nsAlign regexp: ")
+    (align-regexp start end
+                  (concat "\\(\\s-*\\)" regexp) 1 1 t))
+
+  (defadvice align-regexp (around align-regexp-with-spaces activate)
+    (let ((indent-tabs-mode nil))
+      ad-do-it))
+#+END_SRC
+
+The final t (aka true) is responsible for repeating the task. Call that command with the regular expression [[[[:space:]]]]+
+
+** Find-file-at-point (ffap) improvement
+
+#+BEGIN_SRC emacs-lisp
+  ;; Improvement to the ffap function so that it goes to line number when given at the end (e.g. file.v:123)
+  (defvar ffap-file-at-point-line-number nil
+    "Variable to hold line number from the last ffap-file-at-point' call.")
+
+  (defadvice ffap-file-at-point (after ffap-store-line-number activate)
+    "Search `ffap-string-at-point' for a line number pattern and
+  save it in `ffap-file-at-point-line-number' variable."
+    (let* ((string (ffap-string-at-point)) ;; string/name definition copied from `ffap-string-at-point'
+           (name
+            (or (condition-case nil
+                    (and (not (string-match "//" string)) ; foo.com://bar
+                         (substitute-in-file-name string))
+                  (error nil))
+                string))
+           (line-number-string
+            (and (string-match ":[0-9]+" name)
+                 (substring name (1+ (match-beginning 0)) (match-end 0))))
+           (line-number
+            (and line-number-string
+                 (string-to-number line-number-string))))
+      (if (and line-number (> line-number 0))
+          (setq ffap-file-at-point-line-number line-number)
+        (setq ffap-file-at-point-line-number nil))))
+
+  (defadvice find-file-at-point (after ffap-goto-line-number activate)
+    "If `ffap-file-at-point-line-number' is non-nil goto this line."
+    (when ffap-file-at-point-line-number
+      (forward-line ffap-file-at-point-line-number)
+      (setq ffap-file-at-point-line-number nil)))
+#+END_SRC
+
+** Isearch with symbol regex [fn:4]
+This emulates the Vim behavior on the first keypress, but then puts you in a
+regex incremental search, which nicely integrates with standard emacs search
+functionality.
+#+BEGIN_SRC emacs-lisp
+   (defun isearch-yank-regexp (regexp)
+      "Pull REGEXP into search regexp."
+      (let ((isearch-regexp nil)) ;; Dynamic binding of global.
+        (isearch-yank-string regexp))
+      (isearch-search-and-update))
+
+    (defun isearch-yank-symbol (&optional partialp backward)
+      "Put symbol at current point into search string.
+
+      If PARTIALP is non-nil, find all partial matches."
+      (interactive "P")
+
+      (let (from to bound sym)
+        (setq sym
+    ; this block taken directly from find-tag-default
+    ; we couldn't use the function because we need the internal from and to values
+              (when (or (progn
+                          ;; Look at text around `point'.
+                          (save-excursion
+                            (skip-syntax-backward "w_") (setq from (point)))
+                          (save-excursion
+                            (skip-syntax-forward "w_") (setq to (point)))
+                          (> to from))
+                        ;; Look between `line-beginning-position' and `point'.
+                        (save-excursion
+                          (and (setq bound (line-beginning-position))
+                               (skip-syntax-backward "^w_" bound)
+                               (> (setq to (point)) bound)
+                               (skip-syntax-backward "w_")
+                               (setq from (point))))
+                        ;; Look between `point' and `line-end-position'.
+                        (save-excursion
+                          (and (setq bound (line-end-position))
+                               (skip-syntax-forward "^w_" bound)
+                               (< (setq from (point)) bound)
+                               (skip-syntax-forward "w_")
+                               (setq to (point)))))
+                (buffer-substring-no-properties from to)))
+        (cond ((null sym)
+               (message "No symbol at point"))
+              ((null backward)
+               (goto-char (1+ from)))
+              (t
+               (goto-char (1- to))))
+        (isearch-search)
+        (if partialp
+            (isearch-yank-string sym)
+          (isearch-yank-regexp
+           (concat "\\_<" (regexp-quote sym) "\\_>")))))
+
+    (defun isearch-current-symbol (&optional partialp)
+      "Incremental search forward with symbol under point.
+
+      Prefixed with \\[universal-argument] will find all partial
+      matches."
+      (interactive "P")
+      (let ((start (point)))
+        (isearch-forward-regexp nil 1)
+        (isearch-yank-symbol partialp)))
+
+    (defun isearch-backward-current-symbol (&optional partialp)
+      "Incremental search backward with symbol under point.
+
+      Prefixed with \\[universal-argument] will find all partial
+      matches."
+      (interactive "P")
+      (let ((start (point)))
+        (isearch-backward-regexp nil 1)
+        (isearch-yank-symbol partialp)))
+#+END_SRC
+
+#+RESULTS:
+: isearch-backward-current-symbol
+
+** Replace all at point
+Grabs the symbol under point, prompts for a replacement string, and then does the
+replacement through the buffer. Point moves to original symbol (appears not to
+move in most instances). Borrowed from 'Isearch with symbol'.
+#+BEGIN_SRC emacs-lisp
+  (defun my-replace-all (x &optional partailp backward)
+    "blah"
+    (interactive "sReplace symbol at point with: ")
+    ;; (interactive "P")
+    (let (from to bound sym)
+      (setq sym
+     ; this block taken directly from find-tag-default
+     ; we couldn't use the function because we need the internal from and to values
+            (when (or (progn
+                        ;; Look at text around `point'.
+                        (save-excursion
+                          (skip-syntax-backward "w_") (setq from (point)))
+                        (save-excursion
+                          (skip-syntax-forward "w_") (setq to (point)))
+                        (> to from))
+                      ;; Look between `line-beginning-position' and `point'.
+                      (save-excursion
+                        (and (setq bound (line-beginning-position))
+                             (skip-syntax-backward "^w_" bound)
+                             (> (setq to (point)) bound)
+                             (skip-syntax-backward "w_")
+                             (setq from (point))))
+                      ;; Look between `point' and `line-end-position'.
+                      (save-excursion
+                        (and (setq bound (line-end-position))
+                             (skip-syntax-forward "^w_" bound)
+                             (< (setq from (point)) bound)
+                             (skip-syntax-forward "w_")
+                             (setq to (point)))))
+              (buffer-substring-no-properties from to)))
+      (if (null sym)
+          (message "No symbol at point")
+        (goto-char (1- to))
+        ;; Once we have symbol, do the replacement
+        (replace-string sym x t (point-min) (point-max))
+        )))
+
+  (define-key search-map "r" 'my-replace-all) ;; "M-s r"
+#+END_SRC
+
+#+RESULTS:
+: my-replace-all
+
+** DesignSync commands
+#+BEGIN_SRC emacs-lisp
+  (defun design-sync-check-out ()
+    "run a command on the current file and revert the buffer"
+    (interactive)
+    (shell-command
+     (format "dssc co -noc -loc %s"
+             (shell-quote-argument (buffer-file-name))))
+    (revert-buffer t t t))
+
+  (defun design-sync-check-out-cancel ()
+    "run a command on the current file and revert the buffer"
+    (interactive)
+    (shell-command
+     (format "dssc cancel %s -force "
+             (shell-quote-argument (buffer-file-name))))
+    (revert-buffer t t t))
+
+  (defun design-sync-diff ()
+    "run a command on the current file and revert the buffer"
+    (interactive)
+    (async-shell-command
+     (format "dssc diff %s "
+             (shell-quote-argument (buffer-file-name)))))
+
+  (defun design-sync-diff-versions ()
+    "run a command on the current file and revert the buffer"
+    (interactive)
+    (let ((x (read-string "Enter version A : ")))
+      (let ((y (read-string "Enter version B [blank for local file]: ")))
+        (async-shell-command
+         (format "dssc diff \"%s;%s\" \"%s%s\" "
+                 (shell-quote-argument (buffer-file-name))
+                 x
+                 (shell-quote-argument (buffer-file-name))
+                 (if (> (length y) 0)
+                     (format ";%s" y)
+                   "")
+                 )
+         ))))
+
+  (defun design-sync-history ()
+    "run a command on the current file and revert the buffer"
+    (interactive)
+    (shell-command
+     (format "dssc vhist %s "
+             (shell-quote-argument (buffer-file-name)))
+     (generate-new-buffer (concat (buffer-name) "-vhist")))
+    (other-window 1)  ;; Switch to 'vhist' buffer
+    (end-of-buffer)   ;; Go to end of buffer to see latest check-ins
+    (local-set-key (kbd "q") 'kill-buffer-and-window))  ;; 'quit-window only buries buffer, doesn't kill it.
+
+  (defun design-sync-check-in ()
+    "run a command on the current file and revert the buffer"
+    (interactive)
+    (let ((x (read-string "Enter comment: ")))
+      (if (y-or-n-p (format "dssc ci -com \"%s\"  Do it?" x ))
+          (progn  ;; Yes
+            (async-shell-command
+             (format "dssc ci %s -com \"%s\""
+                     (shell-quote-argument (buffer-file-name))
+                     x)))
+        (progn    ;; No
+          (message "Command cancelled.")
+          )))
+    (revert-buffer t t t))
+
+  (defalias 'cin 'design-sync-check-in)
+  (defalias 'cout 'design-sync-check-out)
+  (defalias 'vhist 'design-sync-history)
+#+END_SRC
+
+** Search all buffers
+#+BEGIN_SRC emacs-lisp
+  (defun search-all-buffers (regexp)
+    (interactive "sRegexp: ")
+    (multi-occur-in-matching-buffers "." regexp t))
+#+END_SRC
+
+** query-swap-regexp
+#+BEGIN_SRC emacs-lisp
+  (defun query-swap-regexp (regexp-a regexp-b)
+    "Swap A and B regexp matches in current buffer or region."
+    (interactive "sRegexp A: \nsRegexp B: ")
+    (let ((match-a (save-excursion
+                     (re-search-forward regexp-a nil t)
+                     (match-string 0)))
+          (match-b (save-excursion
+                     (re-search-forward regexp-b nil t)
+                     (match-string 0))))
+      (query-replace-regexp
+       (concat "\\(\\(" regexp-a "\\)\\|" regexp-b "\\)")
+       `(replace-eval-replacement
+         replace-quote
+         (if (match-string 2) ,match-b ,match-a))
+       nil
+       (if (and transient-mark-mode mark-active) (region-beginning))
+       (if (and transient-mark-mode mark-active) (region-end)))))
+#+END_SRC
+
+** Revert-buffer
+#+BEGIN_SRC emacs-lisp
+  ;; Revert-buffer
+  (defun my-revert-buffer ()
+    "Remove highlighting from entire file."
+    (interactive)
+    (revert-buffer t t t))
+#+END_SRC
+
+** Show non-ASCII characters
+#+BEGIN_SRC emacs-lisp
+  (defun occur-non-ascii ()
+    "Find any non-ascii characters in the current buffer."
+    (interactive)
+    (occur "[^[:ascii:]]"))
+#+END_SRC
+
+** Show-paren-function
+#+BEGIN_SRC emacs-lisp
+  (defadvice show-paren-function
+    (after show-matching-paren-offscreen activate)
+    "If the matching paren is offscreen, show the matching line in the
+          echo area. Has no effect if the character before point is not of
+          the syntax class ')'."
+    (interactive)
+    (let* ((cb (char-before (point)))
+           (matching-text (and cb
+                               (char-equal (char-syntax cb) ?\) )
+                               (blink-matching-open))))
+      (when matching-text (message matching-text))))
+#+END_SRC
+
+** Smarter Navigation to the Beginning of a Line [fn:2]
+Wouldn’t it be great if =C-a= initially took you to the first non-whitespace
+char(as =back-to-indentation= does) on a line, and if pressed again took you to
+the actual beginning of the line? It would be! Let’s get it done:
+#+BEGIN_SRC emacs-lisp
+  (defun smarter-move-beginning-of-line (arg)
+    "Move point back to indentation of beginning of line.
+
+  Move point to the first non-whitespace character on this line.
+  If point is already there, move to the beginning of the line.
+  Effectively toggle between the first non-whitespace character and
+  the beginning of the line.
+
+  If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+  point reaches the beginning or end of the buffer, stop there."
+    (interactive "^p")
+    (setq arg (or arg 1))
+
+    ;; Move lines first
+    (when (/= arg 1)
+      (let ((line-move-visual nil))
+        (forward-line (1- arg))))
+
+    (let ((orig-point (point)))
+      (back-to-indentation)
+      (when (= orig-point (point))
+        (move-beginning-of-line 1))))
+
+  ;; remap C-a to `smarter-move-beginning-of-line'
+  (global-set-key [remap move-beginning-of-line]
+                  'smarter-move-beginning-of-line)
+#+END_SRC
+The command will keep toggling between the first non-whitespace char and the
+beginning of the line when invoked.
+
+** Toggle Window Split [fn:3]
+Vertical split shows more of each line, horizontal split shows more lines. This
+code toggles between them. It only works for frames with exactly two
+windows. The top window goes to the left or vice-versa. I was motivated by
+ediff-toggle-split and helped by TransposeWindows. There may well be better ways
+to write this.
+#+BEGIN_SRC emacs-lisp
+  (defun toggle-window-split ()
+    (interactive)
+    (if (= (count-windows) 2)
+        (let* ((this-win-buffer (window-buffer))
+               (next-win-buffer (window-buffer (next-window)))
+               (this-win-edges (window-edges (selected-window)))
+               (next-win-edges (window-edges (next-window)))
+               (this-win-2nd (not (and (<= (car this-win-edges)
+                                           (car next-win-edges))
+                                       (<= (cadr this-win-edges)
+                                           (cadr next-win-edges)))))
+               (splitter
+                (if (= (car this-win-edges)
+                       (car (window-edges (next-window))))
+                    'split-window-horizontally
+                  'split-window-vertically)))
+          (delete-other-windows)
+          (let ((first-win (selected-window)))
+            (funcall splitter)
+            (if this-win-2nd (other-window 1))
+            (set-window-buffer (selected-window) this-win-buffer)
+            (set-window-buffer (next-window) next-win-buffer)
+            (select-window first-win)
+            (if this-win-2nd (other-window 1))))))
+#+END_SRC
+
+** Temporarily Maximize Window [fn:5]
+An Emacs function to temporarily make one buffer fullscreen. You can quickly restore the old window setup.
+#+BEGIN_SRC emacs-lisp
+  (defun toggle-maximize-buffer () "Maximize buffer"
+    (interactive)
+    (if (= 1 (length (window-list)))
+        (jump-to-register '_)
+      (progn
+        (window-configuration-to-register '_)
+        (delete-other-windows))))
+#+END_SRC
+
+** Ediff
+*** Restore windows
+Add methods to setup and tear-down of ediff-buffers. Help from https://www.emacswiki.org/emacs/EdiffMode#toc3
+#+BEGIN_SRC emacs-lisp
+  (defvar win-config nil)
+
+  (defun save-window-configuration ()
+    (setq win-config (current-window-configuration)))
+  (defun restore-window-configuration ()
+    (set-window-configuration win-config))
+
+  (add-hook 'ediff-before-setup-hook 'save-window-configuration)
+  (add-hook 'ediff-quit-hook         'restore-window-configuration 'append)
+  (add-hook 'ediff-suspend-hook      'restore-window-configuration 'append)
+#+END_SRC
+
+*** Minimize Ediff Control buffer
+This doesn't actually work. It tries to maximize all the time.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (add-hook 'ediff-after-setup-control-frame-hook 'toggle-frame-maximized)
+#+END_SRC
+
+** Shell
+Along with csh-mode.el, fixes the broken auto-indentation for *csh scripts.
+#+BEGIN_SRC emacs-lisp
+  (defun my/tcsh-set-indent-functions ()
+    (when (or (string-match ".*\\.alias" (buffer-file-name))
+              (string-match ".*csh$" (file-name-extension (buffer-file-name))))
+      (require 'csh-mode) ;; https://github.com/Tux/tcsh/blob/master/csh-mode.el
+      (setq-local indent-line-function 'csh-indent-line)
+      (setq-local indent-region-function 'csh-indent-region)))
+#+END_SRC
+
+The following defines a function to untabify the entire buffer except
+if its major mode is makefile-mode or one of its derivatives.
+https://stackoverflow.com/questions/14913398/in-emacs-how-do-i-save-without-running-save-hooks
+#+BEGIN_SRC emacs-lisp
+  ;; SSG team never wants tabs by default
+  (defvar my-inhibit-untabify nil
+    "When non-nil, look at other conditions to determine if tabs should be replaces")
+
+  ;; =M-x my-toggle-untabify RET= in the buffers where you don't want to trim whitespace.
+  (defun my-toggle-untabify ()
+    (interactive)
+    (if my-inhibit-untabify
+        (progn ; Lets you evaluate more than one sexp for the true case
+          (set (make-local-variable 'my-inhibit-untabify) nil)
+          (message "Tabs will be replaced by spaces, unconditionally"))
+      (set (make-local-variable 'my-inhibit-untabify) t)
+      (message "Tabs will not be replaced by spaces for this buffer only.")))
+
+  (defun untabify-except-makefiles ()
+    "Replace tabs with spaces except in makefiles."
+    (unless (and my-inhibit-untabify (derived-mode-p 'makefile-mode))
+      (untabify (point-min) (point-max))))
+
+  (defun untabify-except-python ()
+    "Replace tabs with spaces except in python files."
+    (unless (and my-inhibit-untabify (derived-mode-p 'python-mode))
+      (untabify (point-min) (point-max))))
+#+END_SRC
+
+#+RESULTS:
+: untabify-except-python
+
+Run Current File
+#+BEGIN_SRC emacs-lisp
+  ;;; THIS gist is from Xah Emacs Tutorial
+  ;;; http://ergoemacs.org/emacs/emacs.html
+  (defun run-current-file ()
+    "Execute or compile the current file.
+  For example, if the current buffer is the file x.pl, then it'll
+  call “perl x.pl” in a shell.  The file can be php, perl, python,
+  ruby, javascript, bash, ocaml, vb, elisp.  File suffix is used to
+  determine what program to run.
+
+  If the file is modified, ask if you want to save first. (This command always run the saved version.)
+
+  If the file is emacs lisp, run the byte compiled version if exist."
+    (interactive)
+    (let (suffixMap fName fSuffix progName cmdStr)
+
+      ;; a keyed list of file suffix to comand-line program path/name
+      (setq suffixMap
+            '(("php" . "php")
+              ;; ("coffee" . "coffee -p")
+              ("pl" . "perl")
+              ("py" . "python")
+              ("rb" . "ruby")
+              ("js" . "node")             ; node.js
+              ("sh" . "tcsh")
+              ("csh" . "tcsh")
+              ("ml" . "ocaml")
+              ("vbs" . "cscript")))
+      (setq fName (buffer-file-name))
+      (setq fSuffix (file-name-extension fName))
+      (setq progName (cdr (assoc fSuffix suffixMap)))
+      (setq cmdStr (concat progName " \""   fName "\""))
+
+      (when (buffer-modified-p)
+        (progn
+          (when (y-or-n-p "Buffer modified. Do you want to save first?")
+            (save-buffer) ) ) )
+
+      (if (string-equal fSuffix "el") ; special case for emacs lisp
+          (progn
+            (load (file-name-sans-extension fName)))
+        (if progName
+            (progn
+              (message "Running…")
+              ;; (message progName)
+              (async-shell-command cmdStr "*run-current-file output*" ))
+          (message "No recognized program file suffix for this file.")))
+      ))
+#+END_SRC
+
+** Other
+#+BEGIN_SRC emacs-lisp
+  ;; Recenter cursor horizontally
+  (defun my-horizontal-recenter ()
+    "make the point horizontally centered in the window"
+    (interactive)
+    (let ((mid (/ (window-width) 2))
+          (line-len (save-excursion (end-of-line) (current-column)))
+          (cur (current-column)))
+      (if (< mid cur)
+          (set-window-hscroll (selected-window)
+                              (- cur mid)))))
+  (global-set-key (kbd "M-C-l") 'my-horizontal-recenter)
+
+  ;; Functions for inserting column of binary numbers
+  (defun my-format-bin (val width)
+    "Convert a number to a binary string."
+    (let (result)
+      (while (> width 0)
+        (if (equal (mod val 2) 1)
+            (setq result (concat "1" result))
+          (setq result (concat "0" result)))
+        (setq val (/ val 2))
+        (setq width (1- width)))
+      result))
+
+  (defun my-increment-number-binary (&optional arg)
+    "Increment the number forward from point by 'arg'."
+    (interactive "p*")
+    (save-excursion
+      (save-match-data
+        (let (inc-by field-width answer)
+          (setq inc-by (if arg arg 1))
+          (skip-chars-backward "01")
+          (when (re-search-forward "[0-1]+" nil t)
+            (setq field-width (- (match-end 0) (match-beginning 0)))
+            (setq answer (+ (string-to-number (match-string 0) 2) inc-by))
+            (when (< answer 0)
+              (setq answer (+ (expt 2 field-width) answer)))
+            (replace-match (my-format-bin answer field-width)))))))
+
+  (defun my-binary-column (n width)
+    "Insert a sequence of numbers vertically.
+  For example, if your text is:
+
+  a b
+  c d
+  e f
+
+  and your cursor is after “a”, then calling this function with argument
+  3 will change it to become:
+
+  a1 b
+  c2 d
+  e3 f
+
+  If there are not enough existing lines after the cursor
+  when this function is called, it aborts at the last line.
+
+  This command is conveniently used together with `kill-rectangle' and `string-rectangle'."
+    (interactive "nEnter the max integer: \nnEnter the width: ")
+    (let ((i 0) colpos )
+      (setq colpos (- (point) (line-beginning-position)))
+      (while (<= i n)
+        (insert (concat (number-to-string width) "'b" (my-format-bin i width) " "))
+        (forward-line) (beginning-of-line) (forward-char colpos)
+        (setq i (1+ i))
+        )))
+#+END_SRC
+
+** TAGs
+*** CTAGs
+
+#+BEGIN_SRC emacs-lisp
+(setq path-to-ctags (concat (getenv "WORKSPACE") "/TAGS"))
+(if (file-exists-p path-to-ctags)
+    (visit-tags-table path-to-ctags)) ;; Read TAGS if already built
+
+(defun create-tags (dir-name)
+  "Create tags file."
+  (interactive "DDirectory: ")
+  (shell-command
+   (format "ctags -e -R -o %s --exclude=gen_regs --exclude=cdc --exclude=doc --exclude=pldrc --exclude=csv $WORKSPACE/design/* $WORKSPACE/libs/dig_common/* $WORKSPACE/libs/pib/* $WORKSPACE/libs/std_cell_wrappers/* " path-to-ctags ))
+  (visit-tags-table path-to-ctags)
+  )
+#+END_SRC
+
+* Hooks
+** Hideshow
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'c-mode-common-hook   'hs-minor-mode)
+  (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+  (add-hook 'java-mode-hook       'hs-minor-mode)
+  (add-hook 'lisp-mode-hook       'hs-minor-mode)
+  (add-hook 'perl-mode-hook       'hs-minor-mode)
+  (add-hook 'sh-mode-hook         'hs-minor-mode)
+  (add-hook 'ruby-mode-hook       'hs-minor-mode)
+#+END_SRC
+
+https://emacs.stackexchange.com/questions/2884/the-old-how-to-fold-xml-question
+#+BEGIN_SRC emacs-lisp
+  (require 'hideshow)
+  (require 'sgml-mode)
+  (require 'nxml-mode)
+
+  (add-to-list 'hs-special-modes-alist
+               '(nxml-mode
+                 "<!--\\|<[^/>]*[^/]>"
+                 "-->\\|</[^/>]*[^/]>"
+
+                 "<!--"
+                 sgml-skip-tag-forward
+                 nil))
+
+
+
+  (add-hook 'nxml-mode-hook 'hs-minor-mode)
+
+  ;; optional key bindings, easier than hs defaults
+  (define-key nxml-mode-map (kbd "C-c h") 'hs-toggle-hiding)
+#+END_SRC
+
+#+RESULTS:
+: hs-toggle-hiding
+
+** Highlight-mode
+#+BEGIN_SRC emacs-lisp
+  ;; (add-hook        'sh-mode-hook 'highlight-changes-mode)
+  ;; (add-hook      'text-mode-hook 'highlight-changes-mode)
+  ;; (add-hook   'verilog-mode-hook 'highlight-changes-mode)
+  ;; (add-hook 'conf-unix-mode-hook 'highlight-changes-mode)
+  ;; (add-hook     'after-save-hook 'my-unhighlight-changes)
+  ;; (add-hook 'org-mode-hook
+  ;;           (lambda ()
+  ;;             (call-interactively 'highlight-changes-visible-mode) t))
+#+END_SRC
+
+** Other
+#+BEGIN_SRC emacs-lisp
+  ;; SSG team does not want makefiles or SCons to have tabs
+  ;; (add-hook 'before-save-hook (lambda () (untabify (point-min) (point-max))))
+  (add-hook 'before-save-hook 'untabify-except-makefiles)
+  ;; (add-hook 'before-save-hook 'untabify-except-python)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (add-hook 'sh-set-shell-hook #'my/tcsh-set-indent-functions)
+  (add-hook 'dired-mode-hook 'my-dired-mode-setup)
+#+END_SRC
+
+Not sure where to put this. SCons scripts use Python syntax
+#+BEGIN_SRC emacs-lisp
+  ;; add several elements at the end (may create double entries,
+  ;; but that would not hurt)
+  (setq auto-mode-alist
+        (append auto-mode-alist
+                '(("SConstruct" . python-mode)
+                  ("SConscript" . python-mode))))
+
+  ;; (setq auto-mode-alist
+  ;;       (cons '("SConstruct" . python-mode) auto-mode-alist)
+  ;;       (cons '("SConscript" . python-mode) auto-mode-alist))
+#+END_SRC
+
+For some reason python-mode overrides the default offset of 4 to 8. I can't find
+where that is happening, but this is working
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'python-mode-hook
+        (lambda ()
+          (setq indent-tabs-mode t)
+          (setq tab-width 4)
+          (setq python-indent-offset 4)))
+#+END_SRC
+
+#+RESULTS:
+| lambda | nil | (setq indent-tabs-mode t) | (setq tab-width 4) | (setq python-indent-offset 4) |
+
+* Extra
+** Non-Windows System
+TODO: Find source/explanation for this code
+#+BEGIN_SRC emacs-lisp
+  (unless window-system
+    (add-hook 'linum-before-numbering-hook
+              (lambda ()
+                (setq-local linum-format-fmt
+                            (let ((w (length (number-to-string
+                                              (count-lines (point-min) (point-max))))))
+                              (concat "%" (number-to-string w) "d"))))))
+
+  (defun linum-format-func (line)
+    (concat
+     (propertize (format linum-format-fmt line) 'face 'linum)
+     (propertize " " 'face 'mode-line)))
+
+  (unless window-system
+    (setq linum-format 'linum-format-func))
+#+END_SRC
+
+Unbind <C-i> from the TAB key and bind it to indent-region.
+Since TAB and <C-i> cannot be differentiated in TTY emacs,
+the workaround is to conditionally bind TAB to indent-region
+when there is an active region selected.
+https://emacs.stackexchange.com/questions/220/how-to-bind-c-i-as-different-from-tab
+#+BEGIN_SRC emacs-lisp
+  (if (window-system)
+      ;; IF we are not in a TTY, unbind C-i from TAB
+      (progn
+        (define-key input-decode-map [?\C-i] [C-i])
+        ;; ... and remap it to indent-region
+        (global-set-key (kbd "<C-i>") 'indent-region))
+    ;; ELSE IF we are in a TTY, create a replacement for TAB
+    (defun my/tab-replacement (&optional START END)
+      (interactive "r")
+      (if (use-region-p)
+          ;; IF active region, use indent-region
+          (indent-region START END)
+        ;; ELSE IF no active region, use default tab command
+        (indent-for-tab-command)))
+    ;; Bind our quick-and-dirty TAB replacement to the TAB key
+    (global-set-key (kbd "TAB") 'my/tab-replacement))
+#+END_SRC
+
+#+RESULTS:
+: my/tab-replacement
+
+* Footnotes
+
+[fn:1] Taken from https://www.emacswiki.org/emacs/AlignCommands
+
+[fn:2] Taken from [[http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/][EmacsRedux : Smarter Navigation to the Beginning of a Line]]
+
+[fn:3] Taken from [[https://www.emacswiki.org/emacs/ToggleWindowSplit][EmacsWike: Toggle Window Split]]
+
+[fn:4] Taken from [[https://www.emacswiki.org/emacs/SearchAtPoint][EmacsWiki: Search At Point]]
+
+[fn:5] Taken from [[https://gist.github.com/mads-hartmann/3402786][GitHub Gist]]

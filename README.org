@@ -1,0 +1,21 @@
+* Dotfiles
+This repo contains the configuration files for my work setup. It uses [[https://www.gnu.org/software/stow/][GNU Stow]] to link the files
+into the $HOME directory and utilizes [[https://github.com/plexus/chemacs2][Chemacs2]] to easily switch between [[https://www.gnu.org/software/emacs/][GNU Emacs]] configurations -
+whether for debug or development. I strive for literate programming via Org-mode and continue to
+hold out hope that [[https://github.com/hlissner/doom-emacs][Doom Emacs]] can work as my configuration framework.
+* Installation
+To facilitate linking of files from this repo to the $HOME directory, ensure =stow= is available
+#+BEGIN_SRC sh
+  sudo apt install stow
+#+END_SRC
+
+As this repo contains submodules, clone using the following command to retrieve all necessary files.
+#+BEGIN_SRC sh
+  git clone <URL-of-dotfiles-repo> dotfiles --recursive
+#+END_SRC
+
+Once complete, load the files into the $HOME directory.
+#+BEGIN_SRC sh
+  cd dotfiles
+  stow .
+#+END_SRC
