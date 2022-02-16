@@ -44,6 +44,11 @@ Set the theme - this one works best for PuTTY imho
   (load-theme 'tango-dark)
 #+END_SRC
 
+To avoid conflict with =stow=, move these automatically generated files to some place else
+#+BEGIN_SRC emacs-lisp
+  (setq auto-save-list-file-prefix (concat (getenv "HOME") "/auto-save-list/.saves-"))
+#+END_SRC
+
 * Key Bindings
 ** HideShow custom keybindings
 #+BEGIN_SRC emacs-lisp
@@ -227,6 +232,13 @@ and loaded into Emacs using:
   (projectile-global-mode t)
   ;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map) ;; lower case 's' stands for Super
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+#+END_SRC
+
+To avoid conflict with =stow=, move these automatically generated files to some place else
+#+BEGIN_SRC emacs-lisp
+  (setq user-projectile-directory (concat (getenv "HOME") "/projectile"))
+  (setq projectile-cache-file (expand-file-name "projectile.cache" user-projectile-directory)
+        projectile-known-projects-file (expand-file-name "projectile-known-projects.eld" user-projectile-directory))
 #+END_SRC
 
 ** Which-Key
