@@ -324,7 +324,7 @@ Expected that clang-format-3.9 is installed
   ;; to find the file of the current buffer.
   (defun wrap-clang-format-region (orig-fun &rest args)
     ;; (message "clang-format-region called with args %S" args)
-    (let((src-file "/usr2/nhaas/format/ABC.clang-format")
+    (let((src-file (concat (getenv "HOME") "/format/ABC.clang-format"))
          (dst-file ".clang-format"))
       (copy-file src-file dst-file "overwrite")
       (apply orig-fun args)
