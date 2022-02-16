@@ -3,6 +3,25 @@ This repo contains the configuration files for my work setup. It uses [[https://
 into the $HOME directory and utilizes [[https://github.com/plexus/chemacs2][Chemacs2]] to easily switch between [[https://www.gnu.org/software/emacs/][GNU Emacs]] configurations -
 whether for debug or development. I strive for literate programming via Org-mode and continue to
 hope that [[https://github.com/hlissner/doom-emacs][Doom Emacs]] will be my configuration framework one day.
+
+** Installation
+To facilitate linking of files from this repo to the $HOME directory, ensure =stow= is available.
+
+#+BEGIN_SRC sh
+  sudo apt install stow
+#+END_SRC
+
+As this repo contains submodules, clone using the following command to retrieve all necessary files.
+#+BEGIN_SRC sh
+  git clone <URL-of-dotfiles-repo> dotfiles --recursive
+#+END_SRC
+
+Once complete, load the files into the $HOME directory.
+#+BEGIN_SRC sh
+  cd dotfiles
+  stow .
+#+END_SRC
+
 ** Stow
 #+BEGIN_QUOTE
 GNU Stow is a symlink farm manager which takes distinct packages of software and/or data located in
@@ -26,7 +45,7 @@ Think of it as a bootloader for Emacs.
 The obvious successor to [[https://github.com/plexus/chemacs][chemacs]], allows for switching between the profiles listed in
 [[file:.emacs-profiles.el][.emacs-profiles.el]].
 
-By default, the profile whose name matches the contents of [[file:.emacs-profile.el][.emacs-profile.el]] will be
+By default, the profile whose name matches the contents of [[file:.emacs-profile][.emacs-profile]] will be
 chosen. Alternatively, the user may provide the profile name on the command line using
 =--withprofile foo=. See [[https://github.com/plexus/chemacs2#usage][Usage]] for more info.
 
@@ -39,25 +58,6 @@ chosen. Alternatively, the user may provide the profile name on the command line
 My current config is a frankenstein of packages, customizations, and workarounds that I have
 employed over the years for ASIC design, scripting, and software development. I hope to find time to
 start anew and possibly switch to Doom altogether.
-[[file:.my-emacs/myinit.org][.my-emacs/myinit.org]]
-
-** Installation
-To facilitate linking of files from this repo to the $HOME directory, ensure =stow= is available.
-
-#+BEGIN_SRC sh
-  sudo apt install stow
-#+END_SRC
-
-As this repo contains submodules, clone using the following command to retrieve all necessary files.
-#+BEGIN_SRC sh
-  git clone <URL-of-dotfiles-repo> dotfiles --recursive
-#+END_SRC
-
-Once complete, load the files into the $HOME directory.
-#+BEGIN_SRC sh
-  cd dotfiles
-  stow .
-#+END_SRC
 
 ** Miscellaneous
 SSH connections to =github.com= appear to be completely blocked by the firewall. Only HTTPS

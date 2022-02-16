@@ -400,30 +400,31 @@ other buffers.
 *** Multiple setups for rendering Plant UML
 **** Using Java
 ***** Prerequisite - Jave Runtime Environment (JRE)
-1.  Overview
+1. Overview
 
-The Java Runtime Environment (JRE) is required to run Java programs. Nowadays there are many JRE
-packages available from a variety of projects and companies, but the two most popular on Ubuntu are
-OpenJDK and Oracle HotSpot.  source: https://ubuntu.com/tutorials/install-jre#1-overview
+   The Java Runtime Environment (JRE) is required to run Java programs. Nowadays there are many JRE
+   packages available from a variety of projects and companies, but the two most popular on Ubuntu
+   are OpenJDK and Oracle HotSpot.  source: https://ubuntu.com/tutorials/install-jre#1-overview
 
 2. Installing OpenJDK JRE
 
-Ubuntu offers the default-jre package, which is regularly updated to ship the latest version of the
-current OpenJDK JRE in Long Term Support (LTS). The default-jre is an excellent choice for most
-situations, thanks to the outstanding track of backwards compatibility of the Java Virtual Machine.
+   Ubuntu offers the default-jre package, which is regularly updated to ship the latest version of
+   the current OpenJDK JRE in Long Term Support (LTS). The default-jre is an excellent choice for
+   most situations, thanks to the outstanding track of backwards compatibility of the Java Virtual
+   Machine.
 
-To install the OpenJDK JRE, we run:
-#+BEGIN_SRC sh
-  sudo apt install default-jre-headless
-#+END_SRC
+   To install the OpenJDK JRE, we run:
+   #+BEGIN_SRC sh
+     sudo apt install default-jre-headless
+   #+END_SRC
 
-NB: I opted for the 'headless' version since I don't anticipate needing to run any Java program with
-GUI needs. See [[https://packages.debian.org/sid/openjdk-8-jre-headless][openjdk-8-jre-headless packae page]]
+   NB: I opted for the 'headless' version since I don't anticipate needing to run any Java program with
+   GUI needs. See [[https://packages.debian.org/sid/openjdk-8-jre-headless][openjdk-8-jre-headless packae page]]
 
-We can check if OpenJDK JRE was properly installed by running:
-#+BEGIN_SRC sh
-  java -version
-#+END_SRC
+   We can check if OpenJDK JRE was properly installed by running:
+   #+BEGIN_SRC sh
+     java -version
+   #+END_SRC
 
 ***** Install
 1. Download plantuml.jar from [[https://plantuml.com/download][official download page]] and save it at /home/you/path/to/plantuml.jar
@@ -447,7 +448,7 @@ We can check if OpenJDK JRE was properly installed by running:
 :PROPERTIES:
 :header-args: :tangle no
 :END:
-This is an _ALTERNATE_ way to render Plant UML. It is not tangled (exported) to [[file:myinit.el][myinit.el]] during
+This is an /ALTERNATE/ way to render Plant UML. It is not tangled (exported) to [[file:myinit.el][myinit.el]] during
 =org-babel-load-file=.
 
 1. Install
