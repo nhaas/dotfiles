@@ -1,0 +1,71 @@
+# Prerequisites
+*.d
+*.swp
+*.swo
+*.sym
+*.tmp
+
+# Object files
+*.b0*
+*.bin
+*.dat
+*.efi
+*.enc
+*.elf
+*.fv
+*.hash
+*.hd
+*.img
+*.ko
+*.map
+*.mbn
+*.mdt
+*.o
+*.o.i
+*.o.pp
+*.obj
+*.pbn
+*.pp
+*.pyc
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.a
+*.la
+*.lib
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.dylib
+*.so
+*.so.*
+
+# Executables
+*.app
+*.exe
+*.hex
+*.out
+*.i*86
+*.x86_64
+
+# Debug files
+*.dSYM/
+*.su
+
+# Core-specific paths
+**/build/[BIKMNRSTWZ]A[DFGHJKLNY]AAN[ABRV]A
+**/build/CHIPSTUBS
+**/build/devcfg*/
+**/build/hyp*/
+**/build/mon*/
+**/build/qdss/qsee*
+**/build/qsee*/
+**/build/tzbsptest
+bsp/qsee/errorCodesDict.txt
+securemsm/tzt/uefi/build_TZTModulePkg.log
+securemsm/tzt/uefi/Conf
+**/*AANAA/

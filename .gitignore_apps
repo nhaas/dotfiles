@@ -1,0 +1,64 @@
+# Prerequisites
+*.d
+*.swp
+*.swo
+*.sym
+*.tmp
+
+# Object files
+*.b0*
+*.bin
+*.dat
+*.efi
+*.enc
+*.elf
+*.fv
+*.hash
+*.hd
+*.img
+*.ko
+*.map
+*.mbn
+*.mdt
+*.o
+*.o.i
+*.o.pp
+*.obj
+*.pbn
+*.pp
+*.pyc
+*.hpp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.a
+*.la
+*.lib
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.dylib
+*.so
+*.so.*
+
+# Executables
+*.app
+*.exe
+*.hex
+*.out
+*.i*86
+*.x86_64
+
+# Debug files
+*.dSYM/
+*.su
+
+# Apps-specific paths
+bsp/trustzone/qsapps
+**/*AANAA/
+**/idl/*.h
+BuildProducts.txt

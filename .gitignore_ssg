@@ -1,0 +1,88 @@
+# Prerequisites
+*.d
+*.swp
+*.swo
+*.sym
+*.tmp
+
+# Object files
+*.b0*
+*.bin
+*.dat
+*.efi
+*.enc
+*.elf
+*.fv
+*.hash
+*.hd
+*.img
+*.ko
+*.map
+*.mbn
+*.mdt
+*.o
+*.o.i
+*.o.pp
+*.obj
+*.pbn
+*.pp
+*.pyc
+*.hpp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.a
+*.la
+*.lib
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.dylib
+*.so
+*.so.*
+
+# Executables
+*.app
+*.exe
+*.hex
+*.out
+*.i*86
+*.x86_64
+
+# Debug files
+*.dSYM/
+*.su
+
+# ssg-specific paths
+**/build/[BIKMNRSTWZ]A[DFGHJKLNPY][AI][AO]N[ABRV]A
+**/build/CHIPSTUBS
+**/build/devcfg*/
+**/build/hyp*/
+**/build/mon*/
+**/build/qdss/qsee*
+**/build/qsee*/
+**/build/gunyah*/
+**/build/tz*/
+**/build/QTEEEmu/
+bsp/qsee/errorCodesDict.txt
+securemsm/tzt/uefi/build_TZTModulePkg.log
+securemsm/tzt/uefi/Conf
+**/*AANAA/
+securemsm/trustzone/qsee/include/
+securemsm/tzt/uefi/TZTModulePkg/sdm845Pkg/Application/
+securemsm/trustzone/qsee/include/*.h
+**/idl/**/*.h
+securemsm/unifiedcrypto/test/inc/cavp*
+securemsm/secrsa/test/inc/cavp*
+bsp/build/scripts/*
+!bsp/build/scripts/idl_audit.cfg
+!bsp/build/scripts/sdk_dpl_files.cfg
+bsp/trustzone/qsapps/*/build/*
+securemsm/sdk/Documentation/*
+securemsm/sdk/QTEEEmu/client_apis/inc/*
+securemsm/trustzone/qsapps/**/auto*.c
+securemsm/platform/**/*auto*.[ch]
