@@ -2,9 +2,48 @@
 This repo contains the configuration files for my work setup. It uses [[https://www.gnu.org/software/stow/][GNU Stow]] to link the files
 into the $HOME directory and utilizes [[https://github.com/plexus/chemacs2][Chemacs2]] to easily switch between [[https://www.gnu.org/software/emacs/][GNU Emacs]] configurations -
 whether for debug or development. I strive for literate programming via Org-mode and continue to
-hold out hope that [[https://github.com/hlissner/doom-emacs][Doom Emacs]] can work as my configuration framework.
-* Installation
-To facilitate linking of files from this repo to the $HOME directory, ensure =stow= is available
+hope that [[https://github.com/hlissner/doom-emacs][Doom Emacs]] will be my configuration framework one day.
+** Stow
+#+BEGIN_QUOTE
+GNU Stow is a symlink farm manager which takes distinct packages of software and/or data located in
+separate directories on the filesystem, and makes them appear to be installed in the same place.
+
+...
+
+This is particularly useful for keeping track of system-wide and per-user installations of software
+built from source, but [[http://brandon.invergo.net/news/2012-05-26-using-gnu-stow-to-manage-your-dotfiles.html][can also facilitate a more controlled approach to management of configuration
+files in the user's home directory]], especially when [[http://lists.gnu.org/archive/html/info-stow/2011-12/msg00000.html][coupled with version control systems]].
+#+END_QUOTE
+Briefly, it creates symlinks from this cloned repo to its parent directory for both files and
+directories contained within.
+
+** Chemacs2
+#+BEGIN_QUOTE
+Chemacs 2 is an Emacs profile switcher, it makes it easy to run multiple Emacs configurations side by side.
+
+Think of it as a bootloader for Emacs.
+#+END_QUOTE
+The obvious successor to [[https://github.com/plexus/chemacs][chemacs]], allows for switching between the profiles listed in
+[[file:.emacs-profiles.el][.emacs-profiles.el]].
+
+By default, the profile whose name matches the contents of [[file:.emacs-profile.el][.emacs-profile.el]] will be
+chosen. Alternatively, the user may provide the profile name on the command line using
+=--withprofile foo=. See [[https://github.com/plexus/chemacs2#usage][Usage]] for more info.
+
+** Emacs Configurations
+| *Name* | *Location*           |
+|--------+----------------------|
+| [[#legacy][Legacy]] | [[file:.my-emacs/myinit.org][.my-emacs/myinit.org]] |
+
+*** Legacy
+My current config is a frankenstein of packages, customizations, and workarounds that I have
+employed over the years for ASIC design, scripting, and software development. I hope to find time to
+start anew and possibly switch to Doom altogether.
+[[file:.my-emacs/myinit.org][.my-emacs/myinit.org]]
+
+** Installation
+To facilitate linking of files from this repo to the $HOME directory, ensure =stow= is available.
+
 #+BEGIN_SRC sh
   sudo apt install stow
 #+END_SRC
@@ -19,3 +58,8 @@ Once complete, load the files into the $HOME directory.
   cd dotfiles
   stow .
 #+END_SRC
+
+** Miscellaneous
+SSH connections to =github.com= appear to be completely blocked by the firewall. Only HTTPS
+connections are allowed for =push= / =pull=. For =push= ing to this repo, you will need a [[https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token][Personal
+Access Token (PAT)]] because username/password are disallowed for security reasons.
