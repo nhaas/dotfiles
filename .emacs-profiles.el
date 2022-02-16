@@ -1,3 +1,3 @@
 (
- ("default" . ((user-emacs-directory . "~/.my-emacs")))
+ ("legacy" . ((user-emacs-directory . "~/.my-emacs")))
 )
