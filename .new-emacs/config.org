@@ -1,0 +1,27 @@
+* Setup
+* Packages
+** Common Dependencies
+I try to avoid using =:after= to avoid confusion. It apparently allows for ordering the
+=(use-package)= commands however you choose, but it may make the whole config more verbose and more
+difficult to understand.
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package transient
+  ;;   :ensure t)
+  ;; (use-package wgrep
+  ;;   :ensure t)
+#+END_SRC
+** Magit
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :ensure t)
+#+END_SRC
+
+* Packages with external dependencies
+
+** RipGrep
+#+BEGIN_SRC emacs-lisp
+  (use-package rg
+    :ensure t)
+#+END_SRC
+
+** Plant UML
