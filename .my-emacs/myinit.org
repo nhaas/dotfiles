@@ -392,12 +392,8 @@ other buffers.
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 #+END_SRC
 
-#+RESULTS:
-| dumb-jump-xref-activate | etags--xref-backend |
-
-** Plant UML
-
-*** Multiple setups for rendering Plant UML
+** PlantUML
+*** Multiple setups for rendering PlantUML
 **** Using Java
 ***** Prerequisite - Jave Runtime Environment (JRE)
 1. Overview
@@ -448,19 +444,19 @@ other buffers.
 :PROPERTIES:
 :header-args: :tangle no
 :END:
-This is an /ALTERNATE/ way to render Plant UML. It is not tangled (exported) to [[file:myinit.el][myinit.el]] during
+This is an /ALTERNATE/ way to render PlantUML. It is not tangled (exported) to [[file:myinit.el][myinit.el]] during
 =org-babel-load-file=.
 
 1. Install
-#+BEGIN_SRC sh
-  apt install plantuml
-#+END_SRC
+   #+BEGIN_SRC sh
+     apt install plantuml
+   #+END_SRC
 
-2.  Configure
-#+BEGIN_SRC emacs-lisp
-  (setq plantuml-executable-path "usr/bin/plantuml")
-  (setq plantuml-default-exec-mode 'executable)
-#+END_SRC
+2. Configure
+   #+BEGIN_SRC emacs-lisp
+     (setq plantuml-executable-path "usr/bin/plantuml")
+     (setq plantuml-default-exec-mode 'executable)
+   #+END_SRC
 
 *** Helper functions
 Taken from [[https://gist.github.com/rpl/547521][plantuml_helpers.el]]
@@ -498,7 +494,28 @@ Taken from [[https://gist.github.com/rpl/547521][plantuml_helpers.el]]
       (reload-image-at-point)))
 #+END_SRC
 
-*** Finally, require Plant UML Mode
+*** Finally, require PlantUML Mode
+It appears that this package doesn't recognize the [[https://plantuml.com/sequence-diagram#988fd738de9c6d17][Return command]] (=return label=) as a way to end
+an active region.
+#+BEGIN_SRC emacs-lisp :tangle no
+  ;; Here is my attempt to override this defvar
+  (defvar plantuml-indent-regexp-activate-end "^\s*\\(deactivate\\|return\\)\s+.+$")
+#+END_SRC
+
+But also, I'm not a fan of indentation for activation region
+#+BEGIN_SRC emacs-lisp
+  ;; No indentation for Lifeline Activation
+  (defvar plantuml-indent-regexp-activate-start "NEVER MATCH THIS EXPRESSION"); define _before_ load plantuml-mode!
+  (defvar plantuml-indent-regexp-activate-end "NEVER MATCH THIS EXPRESSION"); define _before_ load plantuml-mode!
+#+END_SRC
+
+Indentation defaults to 8. Reduce it
+#+BEGIN_SRC emacs-lisp
+  ;; Reduce indentation to 2
+  (setq plantuml-indent-level 2)
+#+END_SRC
+
+
 #+BEGIN_SRC emacs-lisp
   (require 'plantuml-mode)
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
