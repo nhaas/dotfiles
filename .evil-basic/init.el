@@ -52,3 +52,18 @@
   :config
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
+
+;; PlantUML interface
+(use-package plantuml-mode
+  :ensure t
+  :after org
+  :init ;; evaluated before package is loaded
+  (setq plantuml-default-exec-mode 'jar) ; Indicate to use Java for rendering
+  (setq plantuml-jar-path "~/Downloads/plantuml.jar") ; Point to JAR file
+  (setq org-plantuml-jar-path (eval 'plantuml-jar-path)) ; Tell Org where to file JAR file
+  (defvar plantuml-indent-regexp-activate-start "NEVER MATCH THIS EXPRESSION") ; Don't indent on account of active region
+  (defvar plantuml-indent-regexp-activate-end "NEVER MATCH THIS EXPRESSION")
+  (setq plantuml-indent-level 2)
+  :config ;; evaluated after loading it
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t))))
