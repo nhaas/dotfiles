@@ -36,6 +36,8 @@ files in the user's home directory]], especially when [[http://lists.gnu.org/arc
 Briefly, it creates symlinks from this cloned repo to its parent directory for both files and
 directories contained within.
 
+[[https://alexpearce.me/2016/02/managing-dotfiles-with-stow/][Managing dotfiles with GNU stow]] was helpful to understand this concept.
+
 ** Chemacs2
 #+BEGIN_QUOTE
 Chemacs 2 is an Emacs profile switcher, it makes it easy to run multiple Emacs configurations side by side.
@@ -47,14 +49,14 @@ The obvious successor to [[https://github.com/plexus/chemacs][chemacs]], allows 
 
 By default, the profile whose name matches the contents of [[file:.emacs-profile][.emacs-profile]] will be
 chosen. Alternatively, the user may provide the profile name on the command line using
-=--withprofile foo=. See [[https://github.com/plexus/chemacs2#usage][Usage]] for more info.
+=--withprofile foo=. See [[https://github.com/plexus/chemacs2#usage][Usage]] or [[https://systemcrafters.cc/emacs-tips/multiple-configurations-with-chemacs2][this helpful System Crafters article]] for more info.
 
 ** Emacs Configurations
-| *Name*     | *Location*           | *Profile*    | *default* |
-|------------+----------------------+--------------+-----------|
-| [[#legacy][Legacy]]     | [[file:.my-emacs/myinit.org][.my-emacs/myinit.org]] | =legacy=     | Yes       |
-| [[#evil-basic][Evil Basic]] | [[file:.evil-basic/init.el][.evil-basic/init.el]]  | =evil-basic= | No        |
-| [[#new][New]]        | [[file:.new-emacs/init.el][.new-emacs/init.el]]   | =new=        | No        |
+| *Name*     | *Profile*    | *Location*            | *default* |
+|------------+--------------+-----------------------+-----------|
+| [[#legacy][Legacy]]     | =legacy=     | [[file:.my-emacs/myinit.org][.my-emacs/myinit.org]]  | Yes       |
+| [[#evil-basic][Evil Basic]] | =evil-basic= | [[file:.evil-basic/init.el][.evil-basic/init.el]]   | No        |
+| [[#new][New]]        | =new=        | [[file:.new-emacs/config.org][.new-emacs/config.org]] | No        |
 
 *** Legacy
 My current config is a frankenstein of packages, customizations, and workarounds that I have
