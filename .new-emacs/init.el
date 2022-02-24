@@ -18,7 +18,7 @@
 (setq custom-file (expand-file-name "custom.el" (file-name-directory load-file-name)))
 (load custom-file)
 
-;; bootstap use-package
+;; bootstrap use-package
 (setq package-enable-at-startup nil)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)

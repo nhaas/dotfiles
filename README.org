@@ -67,7 +67,31 @@ start anew and possibly switch to Doom altogether.
 The very basic configuration needed to get =vi= keybindings within Emacs, including =org-mode=.
 
 *** New
-TBD
+Rediscover Emacs with a more modern approach. Test advanced features and pave the way towards more
+powerful frameworks like Doom or Spacemacs.
+1) [X] =use-package= to organize packages.
+2) [ ] Literate Programming (i.e. Org file)
+   - [ ] Auto-tangle on save https://youtu.be/kkqVTDbfYp4?t=1371
+   - [ ] [[https://github.com/snosov1/toc-org][Table of Contents]]
+3) [ ] House-keeping
+   - [ ] [[https://github.com/emacscollective/no-littering][no-littering]]?
+4) [ ] Non-GUI IDE-like features
+   - [ ] ripgrip
+   - [ ] magit
+   - [ ] Completion framework
+   - [ ] snippets
+   - etc.
+5) [ ] Emacs client/daemon
+   - [ ] With X11 forwarding, similar experience to terminal Emacs inside tmux?
+6) [ ] GUI Features
+   - [ ] treemacs
+   - [ ] lsp-mode
+   - [ ] dap-mode?
+   - [ ] flycheck/flyspell?
+7) [ ] Beautify
+   - [ ] ligatures?
+   - [ ] icons?
+   - [ ] fonts?
 
 ** Miscellaneous
 SSH connections to =github.com= appear to be completely blocked by the firewall. Only HTTPS
