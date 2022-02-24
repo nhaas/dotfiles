@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# alias ll="ls -l"
-# alias less="less -rgIM"
-# alias tkdiff='/pkg/qct/software/tkdiff/4.2/tkdiff'
 alias find_non_ascii='grep --color='auto' -P -n "[\x80-\xFF]"'
 alias ..="cd .."
 
@@ -26,3 +23,8 @@ function vimfd()
 {
   vim ./$(fd $1)
 }
+
+# Emacs configurations
+alias  e="emacs --with-profile legacy"
+alias eb="emacs --with-profile evil-basic"
+alias ne="emacs --with-profile new"
