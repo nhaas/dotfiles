@@ -57,11 +57,11 @@ I am constantly tinkering with my Emacs configuration (probably too much) and lo
 that Chemacs2 (see [[#chemacs2][above]]) affords me. I also strive for meaningful docuemntation - for myself and
 any reader. The following table outlines the different configurations contained in this repo.
 
-| *Name*     | *Profile*    | *Location*            | *default* | *alias* |
-|------------+--------------+-----------------------+-----------+---------|
-| [[#legacy][Legacy]]     | =legacy=     | [[file:.my-emacs/myinit.org][.my-emacs/myinit.org]]  | Yes       | =e=     |
-| [[#evil-basic][Evil Basic]] | =evil-basic= | [[file:.evil-basic/init.el][.evil-basic/init.el]]   | No        | =eb=    |
-| [[#new][New]]        | =new=        | [[file:.new-emacs/config.org][.new-emacs/config.org]] | No        | =ne=    |
+| *Name*     | *Profile*    | *Location*            | *Default* | *Bash Alias* |
+|------------+--------------+-----------------------+-----------+--------------|
+| [[#legacy][Legacy]]     | =legacy=     | [[file:.my-emacs/myinit.org][.my-emacs/myinit.org]]  | Yes       | =e=          |
+| [[#evil-basic][Evil Basic]] | =evil-basic= | [[file:.evil-basic/init.el][.evil-basic/init.el]]   | No        | =eb=         |
+| [[#new][New]]        | =new=        | [[file:.new-emacs/config.org][.new-emacs/config.org]] | No        | =ne=         |
 
 One quirkly aspect of these configurations is that they all download and install ELisp packages to a
 shared directory. This is atypical for Emacs, but it helps keep each configuration clean and allows
@@ -73,7 +73,8 @@ employed over the years for ASIC design, scripting, and software development. I 
 start anew and possibly switch to Doom altogether.
 
 ** Evil Basic
-The very basic configuration needed to get =vi= keybindings within Emacs, including =org-mode=.
+A simple configuration for the native =vi= user who wants to dip a toe into Emacs or just wants the
+Org file to do its thing without much setup. It includes =org-mode= and =plantuml-mode=.
 
 ** New
 Rediscover Emacs with a more modern approach. Test advanced features and pave the way towards more
