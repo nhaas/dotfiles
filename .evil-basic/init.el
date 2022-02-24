@@ -44,6 +44,12 @@
   ;; example how to map a command in normal mode (called 'normal state' in evil)
   (define-key evil-normal-state-map (kbd ", w") 'evil-window-vsplit))
 
+;; This package emulates surround.vim
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
+
 ;; load evil-org for sensible org-mode keybindings
 (use-package evil-org
   :ensure t
@@ -67,3 +73,6 @@
   :config ;; evaluated after loading it
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
   (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t))))
+
+;; I picked a theme that was better than the default for terminal usage
+(load-theme 'tango-dark)
