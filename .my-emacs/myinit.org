@@ -522,6 +522,16 @@ Indentation defaults to 8. Reduce it
   (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
 #+END_SRC
 
+** toc-org (Table of Contents for Org-mode)
+=toc-org= helps you to have an up-to-date table of contents in org files without exporting (useful
+primarily for readme files on GitHub).
+#+BEGIN_SRC emacs-lisp
+  (use-package toc-org
+    :ensure t
+    :commands toc-org-enable
+    :init (add-hook 'org-mode-hook 'toc-org-enable))
+#+END_SRC
+
 * Modes
 ** C
 *** Set custom C style
@@ -938,7 +948,6 @@ Taken lovingly from https://github.com/emacs-evil/evil/issues/874#issuecomment-3
   (define-key evil-inner-text-objects-map "m" 'evgeni-inner-defun)
   (define-key evil-outer-text-objects-map "m" 'evgeni-inner-defun)
 #+END_SRC
-
 
 ** Rustic
 
@@ -1539,7 +1548,6 @@ Run Current File
 
 ** TAGs
 *** CTAGs
-
 #+BEGIN_SRC emacs-lisp
 (setq path-to-ctags (concat (getenv "WORKSPACE") "/TAGS"))
 (if (file-exists-p path-to-ctags)
@@ -1553,7 +1561,6 @@ Run Current File
   (visit-tags-table path-to-ctags)
   )
 #+END_SRC
-
 * Hooks
 ** Hideshow
 #+BEGIN_SRC emacs-lisp
