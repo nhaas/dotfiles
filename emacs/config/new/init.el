@@ -42,6 +42,15 @@
 ;; will attempt to download any package that isn't already present.
 (setq use-package-always-ensure t)
 
+;; NOTE: If you want to move everything out of the ~/.emacs.d folder
+;; reliably, set `user-emacs-directory` before loading no-littering!
+;(setq user-emacs-directory "~/.cache/emacs")
+
+(use-package no-littering)
+
+;; Don't load or store any customizations
+(setq custom-file null-device)
+
 (use-package auto-package-update
   :custom
   (auto-package-update-interval 7)
@@ -50,20 +59,6 @@
   :config
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
-
-;; NOTE: If you want to move everything out of the ~/.emacs.d folder
-;; reliably, set `user-emacs-directory` before loading no-littering!
-;(setq user-emacs-directory "~/.cache/emacs")
-
-(use-package no-littering)
-
-;; no-littering doesn't set this by default so we must place
-;; auto save files in the same path as it uses for sessions
-(setq auto-save-file-name-transforms
-      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-
-;; Don't load or store any customizations
-(setq custom-file null-device)
 
 (setq inhibit-startup-screen t) ; Go straight to *scratch* if no file is given
 (setq visible-bell t)           ; Set up the visible bell instead of audible 'ding'

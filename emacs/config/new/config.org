@@ -78,6 +78,31 @@ Emacs has a built in package manager but it doesn't make it easy to automaticall
 
 #+end_src
 
+* General Setup
+** Keep Folders Clean
+
+We use the [[https://github.com/emacscollective/no-littering/blob/master/no-littering.el][no-littering]] package to keep folders where we edit files and the Emacs configuration folder clean!  It knows about a wide variety of variables for built in Emacs features as well as those from community packages so it can be much easier than finding and setting these variables yourself.
+
+tldr: It puts everything into a =var/= or =etc/= sub-directory.
+
+#+begin_src emacs-lisp
+
+  ;; NOTE: If you want to move everything out of the ~/.emacs.d folder
+  ;; reliably, set `user-emacs-directory` before loading no-littering!
+  ;(setq user-emacs-directory "~/.cache/emacs")
+
+  (use-package no-littering)
+#+end_src
+
+** House-Keeping
+
+In general, I try to avoid Emacs' [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html][Easy Customization Interface]]. Rather, I put any customizations here, in my config file. Set the custom-file path to null and the problem goes away.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Don't load or store any customizations
+  (setq custom-file null-device)
+#+END_SRC
+
 ** Automatic Package Updates
 
 The auto-package-update package helps us keep our Emacs packages up to date!  It will prompt you after a certain number of days either at startup or at a specific time of day to remind you to update your packages.
@@ -94,33 +119,6 @@ You can also use =M-x auto-package-update-now= to update right now!
     (auto-package-update-maybe)
     (auto-package-update-at-time "09:00"))
 #+end_src
-
-* General Setup
-** Keep Folders Clean
-
-We use the [[https://github.com/emacscollective/no-littering/blob/master/no-littering.el][no-littering]] package to keep folders where we edit files and the Emacs configuration folder clean!  It knows about a wide variety of variables for built in Emacs features as well as those from community packages so it can be much easier than finding and setting these variables yourself.
-
-#+begin_src emacs-lisp
-
-  ;; NOTE: If you want to move everything out of the ~/.emacs.d folder
-  ;; reliably, set `user-emacs-directory` before loading no-littering!
-  ;(setq user-emacs-directory "~/.cache/emacs")
-
-  (use-package no-littering)
-
-  ;; no-littering doesn't set this by default so we must place
-  ;; auto save files in the same path as it uses for sessions
-  (setq auto-save-file-name-transforms
-        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-
-#+end_src
-
-** House-Keeping
-In general, I try to avoid Emacs' [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html][Easy Customization Interface]]. Rather, I put any customizations here, in my config file. Set the custom-file path to null and the problem goes away.
-#+BEGIN_SRC emacs-lisp
-  ;; Don't load or store any customizations
-  (setq custom-file null-device)
-#+END_SRC
 
 * User Interface
 ** Basic UI Configuration
