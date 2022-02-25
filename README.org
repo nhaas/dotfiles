@@ -80,8 +80,8 @@ Org file to do its thing without much setup. It includes =org-mode= and =plantum
 Rediscover Emacs with a more modern approach. Test advanced features and pave the way towards more
 powerful frameworks like Doom or Spacemacs.
 1) [X] =use-package= to organize packages.
-2) [ ] Literate Programming (i.e. Org file)
-   - [ ] Auto-tangle on save https://youtu.be/kkqVTDbfYp4?t=1371
+2) [-] Literate Programming (i.e. Org file)
+   - [X] Auto-tangle on save https://youtu.be/kkqVTDbfYp4?t=1371
    - [ ] [[https://github.com/snosov1/toc-org][Table of Contents]]
 3) [ ] House-keeping
    - [ ] [[https://github.com/emacscollective/no-littering][no-littering]]?

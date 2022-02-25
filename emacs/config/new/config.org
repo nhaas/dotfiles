@@ -1,20 +1,91 @@
 #+TITLE: Emacs Configuration
-#+PROPERTY: header-args:emacs-lisp
+#+STARTUP: content hideblocks
+#+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
 * Preface
+This configuration borrows heavily from [[https://github.com/daviwil/emacs-from-scratch][Emacs From Scratch]]. This file generates [[file:init.el][init.el]] which can be
+loaded by Emacs at startup. It took a bit to bootstrap it, but once it was working cleanly, then it
+could be used to edit itself.
+#+begin_src emacs-lisp
+
+  ;; NOTE: init.el is now generated from config.org.  Please edit that file
+  ;;       and init.el will be generated automatically when saving!
+
+#+end_src
 
 * Setup
+** Startup Performance
+
+#+begin_src emacs-lisp
+
+  ;; The default is 800 kilobytes.  Measured in bytes.
+  (setq gc-cons-threshold (* 50 1000 1000))
+
+  (defun efs/display-startup-time ()
+    (message "Emacs loaded in %s with %d garbage collections."
+             (format "%.2f seconds"
+                     (float-time
+                       (time-subtract after-init-time before-init-time)))
+             gcs-done))
+
+  (add-hook 'emacs-startup-hook #'efs/display-startup-time)
+
+#+end_src
+
+** House-Keeping
+#+BEGIN_SRC emacs-lisp
+  ;; define custom.el file to prevent Emacs from appending to this file
+  (setq custom-file (expand-file-name "custom.el" (file-name-directory load-file-name)))
+  (load custom-file)
+#+END_SRC
+
+* Package System Setup
+
+Emacs has a built in package manager but it doesn't make it easy to automatically install packages on a new system the first time you pull down your configuration.  [[https://github.com/jwiegley/use-package][use-package]] is a really helpful package used in this configuration to make it a lot easier to automate the installation and configuration of everything else we use.
+
+#+begin_src emacs-lisp
+  ;; Initialize package sources
+  (require 'package)
+
+  (setq package-archives '(("melpa-stable" . "https://melpa.org/packages/")))
+
+  ;; Set directory where ELisp Packages are to be installed. Normally this
+  ;; defaults to <user-emacs-directory>/elpa/, but this pollutes the
+  ;; configuration(s). Plus, it opens up the possibility for different
+  ;; configurations to share the same packages.
+  (setq package-user-dir "~/elpa")
+  ;; For 'package' to work properly, it needs to be able to find the GPG keys as
+  ;; well. The default value is <user-emacs-directory>/elpa/gnupg.
+  (setq package-gnupghome-dir "~/elpa/gnupg")
+
+  (package-initialize)
+
+  ;; bootstrap use-package
+  (setq package-enable-at-startup nil)
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+  (eval-when-compile
+    (require 'use-package))
+
+  ;; Silently add ':ensure t' to all instances of use-package
+  ;; (setq use-package-always-ensure t)
+
+#+end_src
+
+* UI
+** Theme
+I picked a theme that was better than the default for terminal usage
+#+BEGIN_SRC emacs-lisp
+  (load-theme 'tango-dark)
+#+END_SRC
 * Packages
 ** Common Dependencies
 I try to avoid using =:after= to avoid confusion. It apparently allows for ordering the
 =(use-package)= commands however you choose, but it may make the whole config more verbose and more
 difficult to understand.
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package transient
-  ;;   :ensure t)
-  ;; (use-package wgrep
-  ;;   :ensure t)
-#+END_SRC
+
 ** Magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
@@ -22,11 +93,25 @@ difficult to understand.
 #+END_SRC
 
 * Packages with external dependencies
-
 ** RipGrep
 #+BEGIN_SRC emacs-lisp
   (use-package rg
     :ensure t)
 #+END_SRC
 
-** Plant UML
+* Org Mode
+** Auto-tangle Configuration Files
+
+This snippet adds a hook to =org-mode= buffers so that =efs/org-babel-tangle-config= gets executed each time such a buffer gets saved.  This function checks to see if the file being saved is the Emacs.org file you're looking at right now, and if so, automatically exports the configuration here to the associated output files.
+
+#+begin_src emacs-lisp
+  ;; Automatically tangle our Emacs.org config file when we save it
+  (defun efs/org-babel-tangle-config ()
+    (when (string-equal (file-name-directory (buffer-file-name))
+                        (expand-file-name user-emacs-directory))
+      ;; Dynamic scoping to the rescue
+      (let ((org-confirm-babel-evaluate nil))
+        (org-babel-tangle))))
+
+  (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
+#+end_src
