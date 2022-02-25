@@ -3,9 +3,9 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
 * Preface
-This configuration borrows heavily from [[https://github.com/daviwil/emacs-from-scratch][Emacs From Scratch]]. This file generates [[file:init.el][init.el]] which can be
-loaded by Emacs at startup. It took a bit to bootstrap it, but once it was working cleanly, then it
-could be used to edit itself.
+
+This configuration borrows heavily from [[https://github.com/daviwil/emacs-from-scratch][Emacs From Scratch]]. This file generates [[file:init.el][init.el]] which can be loaded by Emacs at startup. It took a bit to bootstrap it, but once it was working cleanly, then it could be used to edit itself.
+
 #+begin_src emacs-lisp
 
   ;; NOTE: init.el is now generated from config.org.  Please edit that file
@@ -13,18 +13,6 @@ could be used to edit itself.
 
 #+end_src
 
-* Table of Contents                                             :TOC@1:QUOTE:
-#+BEGIN_QUOTE
-- [[#preface][Preface]]
-- [[#setup][Setup]]
-- [[#package-system-setup][Package System Setup]]
-- [[#ui][UI]]
-- [[#packages][Packages]]
-- [[#packages-with-external-dependencies][Packages with external dependencies]]
-- [[#org-mode][Org Mode]]
-#+END_QUOTE
-
-* Setup
 ** Startup Performance
 
 #+begin_src emacs-lisp
@@ -43,16 +31,20 @@ could be used to edit itself.
 
 #+end_src
 
-** House-Keeping
-#+BEGIN_SRC emacs-lisp
-  ;; define custom.el file to prevent Emacs from appending to this file
-  (setq custom-file (expand-file-name "custom.el" (file-name-directory load-file-name)))
-  (load custom-file)
-#+END_SRC
+* Table of Contents                                             :TOC@1:QUOTE:
+#+BEGIN_QUOTE
+- [[#preface][Preface]]
+- [[#package-system-setup][Package System Setup]]
+- [[#general-setup][General Setup]]
+- [[#user-interface][User Interface]]
+- [[#packages][Packages]]
+- [[#packages-with-external-dependencies][Packages with external dependencies]]
+- [[#org-mode][Org Mode]]
+#+END_QUOTE
 
 * Package System Setup
 
-Emacs has a built in package manager but it doesn't make it easy to automatically install packages on a new system the first time you pull down your configuration.  [[https://github.com/jwiegley/use-package][use-package]] is a really helpful package used in this configuration to make it a lot easier to automate the installation and configuration of everything else we use.
+Emacs has a built in package manager but it doesn't make it easy to automatically install packages on a new system the first time you pull down your configuration. [[https://github.com/jwiegley/use-package][use-package]] is a really helpful package used in this configuration to make it a lot easier to automate the installation and configuration of everything else we use.
 
 #+begin_src emacs-lisp
   ;; Initialize package sources
@@ -83,19 +75,115 @@ Emacs has a built in package manager but it doesn't make it easy to automaticall
   ;; Silently add ':ensure t' to all instances of use-package macro. use-package
   ;; will attempt to download any package that isn't already present.
   (setq use-package-always-ensure t)
+
 #+end_src
 
-* UI
-** Theme
-I picked a theme that was better than the default for terminal usage
+** Automatic Package Updates
+
+The auto-package-update package helps us keep our Emacs packages up to date!  It will prompt you after a certain number of days either at startup or at a specific time of day to remind you to update your packages.
+
+You can also use =M-x auto-package-update-now= to update right now!
+
+#+begin_src emacs-lisp
+  (use-package auto-package-update
+    :custom
+    (auto-package-update-interval 7)
+    (auto-package-update-prompt-before-update t)
+    (auto-package-update-hide-results t)
+    :config
+    (auto-package-update-maybe)
+    (auto-package-update-at-time "09:00"))
+#+end_src
+
+* General Setup
+** Keep Folders Clean
+
+We use the [[https://github.com/emacscollective/no-littering/blob/master/no-littering.el][no-littering]] package to keep folders where we edit files and the Emacs configuration folder clean!  It knows about a wide variety of variables for built in Emacs features as well as those from community packages so it can be much easier than finding and setting these variables yourself.
+
+#+begin_src emacs-lisp
+
+  ;; NOTE: If you want to move everything out of the ~/.emacs.d folder
+  ;; reliably, set `user-emacs-directory` before loading no-littering!
+  ;(setq user-emacs-directory "~/.cache/emacs")
+
+  (use-package no-littering)
+
+  ;; no-littering doesn't set this by default so we must place
+  ;; auto save files in the same path as it uses for sessions
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+
+#+end_src
+
+** House-Keeping
+In general, I try to avoid Emacs' [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html][Easy Customization Interface]]. Rather, I put any customizations here, in my config file. Still, Emacs insists on writing
+#+BEGIN_SRC emacs-lisp
+  ;; define custom.el file to prevent Emacs from appending to this file
+  (setq custom-file (expand-file-name "custom.el" (file-name-directory load-file-name)))
+  (load custom-file)
+#+END_SRC
+
+* User Interface
+** Basic UI Configuration
+
+This section configures basic UI settings that remove unneeded elements to make Emacs look a lot more minimal and modern. If you're just getting started in Emacs, the menu bar might be helpful so you can remove the =(menu-bar-mode -1)= line if you'd like to still see that.
+
+#+begin_src emacs-lisp
+  (setq inhibit-startup-screen t) ; Go straight to *scratch* if no file is given
+  (setq visible-bell t)           ; Set up the visible bell instead of audible 'ding'
+  (menu-bar-mode -1)              ; Disable the menu bar
+  (column-number-mode)            ; Show column position of the cursor as well as the row like this: (R, C)
+
+  ;; Turn on line numbers for all modes...
+  (global-display-line-numbers-mode t)
+  ;; ... except these modes.
+  (dolist (mode '(org-mode-hook
+                  term-mode-hook
+                  shell-mode-hook
+                  ;; treemacs-mode-hook
+                  eshell-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0))))
+#+end_src
+
+This stuff seems relevant only to GUI Emacs
+#+begin_src emacs-lisp
+  ;; (tool-bar-mode -1)          ; Disable the toolbar
+  ;; (tooltip-mode -1)           ; Disable tooltips
+  ;; (scroll-bar-mode -1)        ; Disable visible scrollbar
+  ;; (set-fringe-mode 10)        ; Give some breathing room
+
+  ;; ;; Set frame transparency
+  ;; (set-frame-parameter (selected-frame) 'alpha efs/frame-transparency)
+  ;; (add-to-list 'default-frame-alist `(alpha . ,efs/frame-transparency))
+  ;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+  ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
+#+end_src
+
+** UI Configuration
+
+*** Color Theme
+I picked a theme that was better than the default for terminal usage.
 #+BEGIN_SRC emacs-lisp
   (load-theme 'tango-dark)
 #+END_SRC
+
+*** Which Key
+
+[[https://github.com/justbur/emacs-which-key][which-key]] is a useful UI panel that appears when you start pressing any key binding in Emacs to offer you all possible completions for the prefix. For example, if you press =C-c= (hold control and press the letter =c=), a panel will appear at the bottom of the frame displaying all of the bindings under that prefix and which command they run. This is very useful for learning the possible key bindings in the mode of your current buffer.
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :defer 5 ; defer [N] causes package to be loaded -- if not already -- after N seconds of idle time.
+    :diminish which-key-mode ; reduce clutter on the mode-line
+    :config
+    (which-key-mode) ; enable minor mode after loading
+    )
+#+end_src
+
 * Packages
 ** Common Dependencies
-I try to avoid using =:after= to avoid confusion. It apparently allows for ordering the
-=(use-package)= commands however you choose, but it may make the whole config more verbose and more
-difficult to understand.
+
+I try to avoid using =:after= to avoid confusion. It apparently allows for ordering the =(use-package)= commands however you choose, but it may make the whole config more verbose and more difficult to understand.
 
 ** Magit
 #+BEGIN_SRC emacs-lisp
@@ -110,8 +198,7 @@ difficult to understand.
 
 * Org Mode
 ** toc-org (Table of Contents for Org-mode)
-=toc-org= helps you to have an up-to-date table of contents in org files without exporting (useful
-primarily for readme files on GitHub).
+=toc-org= helps you to have an up-to-date table of contents in org files without exporting (useful primarily for readme files on GitHub).
 #+BEGIN_SRC emacs-lisp
   (use-package toc-org
     :ensure t
@@ -121,7 +208,7 @@ primarily for readme files on GitHub).
 
 ** Auto-tangle Configuration Files
 
-This snippet adds a hook to =org-mode= buffers so that =efs/org-babel-tangle-config= gets executed each time such a buffer gets saved.  This function checks to see if the file being saved is the Emacs.org file you're looking at right now, and if so, automatically exports the configuration here to the associated output files.
+This snippet adds a hook to =org-mode= buffers so that =efs/org-babel-tangle-config= gets executed each time such a buffer gets saved. This function checks to see if the file being saved is the Emacs.org file you're looking at right now, and if so, automatically exports the configuration here to the associated output files. https://youtu.be/kkqVTDbfYp4?t=1371
 
 #+begin_src emacs-lisp
   ;; Automatically tangle our Emacs.org config file when we save it

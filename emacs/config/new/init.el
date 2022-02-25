@@ -13,10 +13,6 @@
 
 (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
-;; define custom.el file to prevent Emacs from appending to this file
-(setq custom-file (expand-file-name "custom.el" (file-name-directory load-file-name)))
-(load custom-file)
-
 ;; Initialize package sources
 (require 'package)
 
@@ -46,7 +42,64 @@
 ;; will attempt to download any package that isn't already present.
 (setq use-package-always-ensure t)
 
+(use-package auto-package-update
+  :custom
+  (auto-package-update-interval 7)
+  (auto-package-update-prompt-before-update t)
+  (auto-package-update-hide-results t)
+  :config
+  (auto-package-update-maybe)
+  (auto-package-update-at-time "09:00"))
+
+;; NOTE: If you want to move everything out of the ~/.emacs.d folder
+;; reliably, set `user-emacs-directory` before loading no-littering!
+;(setq user-emacs-directory "~/.cache/emacs")
+
+(use-package no-littering)
+
+;; no-littering doesn't set this by default so we must place
+;; auto save files in the same path as it uses for sessions
+(setq auto-save-file-name-transforms
+      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+
+;; define custom.el file to prevent Emacs from appending to this file
+(setq custom-file (expand-file-name "custom.el" (file-name-directory load-file-name)))
+(load custom-file)
+
+(setq inhibit-startup-screen t) ; Go straight to *scratch* if no file is given
+(setq visible-bell t)           ; Set up the visible bell instead of audible 'ding'
+(menu-bar-mode -1)              ; Disable the menu bar
+(column-number-mode)            ; Show column position of the cursor as well as the row like this: (R, C)
+
+;; Turn on line numbers for all modes...
+(global-display-line-numbers-mode t)
+;; ... except these modes.
+(dolist (mode '(org-mode-hook
+                term-mode-hook
+                shell-mode-hook
+                ;; treemacs-mode-hook
+                eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+;; (tool-bar-mode -1)          ; Disable the toolbar
+;; (tooltip-mode -1)           ; Disable tooltips
+;; (scroll-bar-mode -1)        ; Disable visible scrollbar
+;; (set-fringe-mode 10)        ; Give some breathing room
+
+;; ;; Set frame transparency
+;; (set-frame-parameter (selected-frame) 'alpha efs/frame-transparency)
+;; (add-to-list 'default-frame-alist `(alpha . ,efs/frame-transparency))
+;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 (load-theme 'tango-dark)
+
+(use-package which-key
+  :defer 5 ; defer [N] causes package to be loaded -- if not already -- after N seconds of idle time.
+  :diminish which-key-mode ; reduce clutter on the mode-line
+  :config
+  (which-key-mode) ; enable minor mode after loading
+  )
 
 (use-package magit)
 
