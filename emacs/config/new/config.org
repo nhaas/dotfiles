@@ -1,5 +1,5 @@
 #+TITLE: Emacs Configuration
-#+PROPERTY: header-args:emacs-lisp :tangle foo.el
+#+PROPERTY: header-args:emacs-lisp
 
 * Preface
 

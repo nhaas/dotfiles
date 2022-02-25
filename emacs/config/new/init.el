@@ -27,9 +27,12 @@
 (eval-when-compile
   (require 'use-package))
 
-;; Load up Org and Org-babel for tangling src code
-(require 'org)
-(require 'ob-tangle)
+;; ;; Load up Org and Org-babel for tangling src code
+;; (require 'org)
+;; (require 'ob-tangle)
 
 ;; Load literate config
 (org-babel-load-file (expand-file-name "config.org" (file-name-directory load-file-name)))
+
+;; I picked a theme that was better than the default for terminal usage
+(load-theme 'tango-dark)

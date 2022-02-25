@@ -57,15 +57,15 @@ I am constantly tinkering with my Emacs configuration (probably too much) and lo
 that Chemacs2 (see [[#chemacs2][above]]) affords me. I also strive for meaningful docuemntation - for myself and
 any reader. The following table outlines the different configurations contained in this repo.
 
-| *Name*     | *Profile*    | *Location*            | *Default* | *Bash Alias* |
-|------------+--------------+-----------------------+-----------+--------------|
-| [[#legacy][Legacy]]     | =legacy=     | [[file:.my-emacs/myinit.org][.my-emacs/myinit.org]]  | Yes       | =e=          |
-| [[#evil-basic][Evil Basic]] | =evil-basic= | [[file:.evil-basic/init.el][.evil-basic/init.el]]   | No        | =eb=         |
-| [[#new][New]]        | =new=        | [[file:.new-emacs/config.org][.new-emacs/config.org]] | No        | =ne=         |
+| *Name*     | *Profile*    | *Configuration*    | *Default* | *Bash Alias* |
+|------------+--------------+--------------------+-----------+--------------|
+| [[#legacy][Legacy]]     | =legacy=     | [[file:emacs/config/legacy/myinit.org][legacy/myinit.org]]  | Yes       | =e=          |
+| [[#evil-basic][Evil Basic]] | =evil-basic= | [[file:emacs/config/evil-basic/init.el][evil-basic/init.el]] | No        | =eb=         |
+| [[#new][New]]        | =new=        | [[file:emacs/config/new/config.org][new/config.org]]     | No        | =ne=         |
 
-One quirkly aspect of these configurations is that they all download and install ELisp packages to a
-shared directory. This is atypical for Emacs, but it helps keep each configuration clean and allows
-for different configurations to use the same downloaded packages.
+One quirkly aspect of these '[[https://wikemacs.org/wiki/Package.el][package.el]]'-based configurations is that they all download and install
+ELisp packages to a shared directory. This is atypical for Emacs, but it helps keep each
+configuration clean and allows for different configurations to use the same downloaded packages.
 
 ** Legacy
 My current config is a frankenstein of packages, customizations, and workarounds that I have
