@@ -53,6 +53,11 @@
 (use-package rg
   :ensure t)
 
+(use-package toc-org
+  :ensure t
+  :commands toc-org-enable
+  :init (add-hook 'org-mode-hook 'toc-org-enable))
+
 ;; Automatically tangle our Emacs.org config file when we save it
 (defun efs/org-babel-tangle-config ()
   (when (string-equal (file-name-directory (buffer-file-name))

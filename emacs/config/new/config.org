@@ -13,6 +13,17 @@ could be used to edit itself.
 
 #+end_src
 
+* Table of Contents                                             :TOC@1:QUOTE:
+#+BEGIN_QUOTE
+- [[#preface][Preface]]
+- [[#setup][Setup]]
+- [[#package-system-setup][Package System Setup]]
+- [[#ui][UI]]
+- [[#packages][Packages]]
+- [[#packages-with-external-dependencies][Packages with external dependencies]]
+- [[#org-mode][Org Mode]]
+#+END_QUOTE
+
 * Setup
 ** Startup Performance
 
@@ -100,6 +111,16 @@ difficult to understand.
 #+END_SRC
 
 * Org Mode
+** toc-org (Table of Contents for Org-mode)
+=toc-org= helps you to have an up-to-date table of contents in org files without exporting (useful
+primarily for readme files on GitHub).
+#+BEGIN_SRC emacs-lisp
+  (use-package toc-org
+    :ensure t
+    :commands toc-org-enable
+    :init (add-hook 'org-mode-hook 'toc-org-enable))
+#+END_SRC
+
 ** Auto-tangle Configuration Files
 
 This snippet adds a hook to =org-mode= buffers so that =efs/org-babel-tangle-config= gets executed each time such a buffer gets saved.  This function checks to see if the file being saved is the Emacs.org file you're looking at right now, and if so, automatically exports the configuration here to the associated output files.
