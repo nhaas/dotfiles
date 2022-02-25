@@ -42,16 +42,15 @@
 (eval-when-compile
   (require 'use-package))
 
-;; Silently add ':ensure t' to all instances of use-package
-;; (setq use-package-always-ensure t)
+;; Silently add ':ensure t' to all instances of use-package macro. use-package
+;; will attempt to download any package that isn't already present.
+(setq use-package-always-ensure t)
 
 (load-theme 'tango-dark)
 
-(use-package magit
-  :ensure t)
+(use-package magit)
 
-(use-package rg
-  :ensure t)
+(use-package rg)
 
 (use-package toc-org
   :ensure t

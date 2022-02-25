@@ -80,9 +80,9 @@ Emacs has a built in package manager but it doesn't make it easy to automaticall
   (eval-when-compile
     (require 'use-package))
 
-  ;; Silently add ':ensure t' to all instances of use-package
-  ;; (setq use-package-always-ensure t)
-
+  ;; Silently add ':ensure t' to all instances of use-package macro. use-package
+  ;; will attempt to download any package that isn't already present.
+  (setq use-package-always-ensure t)
 #+end_src
 
 * UI
@@ -99,15 +99,13 @@ difficult to understand.
 
 ** Magit
 #+BEGIN_SRC emacs-lisp
-  (use-package magit
-    :ensure t)
+  (use-package magit)
 #+END_SRC
 
 * Packages with external dependencies
 ** RipGrep
 #+BEGIN_SRC emacs-lisp
-  (use-package rg
-    :ensure t)
+  (use-package rg)
 #+END_SRC
 
 * Org Mode
