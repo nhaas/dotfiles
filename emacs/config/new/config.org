@@ -116,11 +116,10 @@ We use the [[https://github.com/emacscollective/no-littering/blob/master/no-litt
 #+end_src
 
 ** House-Keeping
-In general, I try to avoid Emacs' [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html][Easy Customization Interface]]. Rather, I put any customizations here, in my config file. Still, Emacs insists on writing
+In general, I try to avoid Emacs' [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html][Easy Customization Interface]]. Rather, I put any customizations here, in my config file. Set the custom-file path to null and the problem goes away.
 #+BEGIN_SRC emacs-lisp
-  ;; define custom.el file to prevent Emacs from appending to this file
-  (setq custom-file (expand-file-name "custom.el" (file-name-directory load-file-name)))
-  (load custom-file)
+  ;; Don't load or store any customizations
+  (setq custom-file null-device)
 #+END_SRC
 
 * User Interface

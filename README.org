@@ -87,7 +87,7 @@ powerful frameworks like Doom or Spacemacs.
    - [X] [[https://github.com/emacscollective/no-littering][no-littering]]
    - [X] auto-update-packages
    - [ ] Keep various files out of the config
-   - [ ] eliminate custom.el altogether?
+   - [X] eliminate custom.el altogether
 4) [ ] Evil
    - [ ] evil-surround
    - [ ] evil-nerd-commenter

@@ -62,9 +62,8 @@
 (setq auto-save-file-name-transforms
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
-;; define custom.el file to prevent Emacs from appending to this file
-(setq custom-file (expand-file-name "custom.el" (file-name-directory load-file-name)))
-(load custom-file)
+;; Don't load or store any customizations
+(setq custom-file null-device)
 
 (setq inhibit-startup-screen t) ; Go straight to *scratch* if no file is given
 (setq visible-bell t)           ; Set up the visible bell instead of audible 'ding'
