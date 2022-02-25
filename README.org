@@ -85,20 +85,38 @@ powerful frameworks like Doom or Spacemacs.
    - [X] [[https://github.com/snosov1/toc-org][Table of Contents]]
 3) [ ] House-keeping
    - [ ] [[https://github.com/emacscollective/no-littering][no-littering]]?
-4) [ ] Non-GUI IDE-like features
+4) [ ] Evil
+   - [ ] evil-surround
+   - [ ] evil-nerd-commenter
+   - [ ] evil-matchit?
+   - [ ] targets.el?
+   - [ ] evil-args?
+   - [ ] evil-cleverparens?
+   - [ ] evil-escape?
+   - [ ] evil-exchange?
+   - [ ] evil-snipe?
+   - [ ] evil-easymotion?
+   - [ ] evil-goggles?
+   - [ ] goto-chg?
+   - [ ] evil-vimish-fold?
+   - [ ] evil-collection?
+   - [ ] general.el?
+5) [ ] Non-GUI IDE-like features
    - [ ] ripgrip
    - [ ] magit
    - [ ] Completion framework
    - [ ] snippets
+   - [ ] projectile
    - etc.
-5) [ ] Emacs client/daemon
+6) [ ] Emacs client/daemon
    - [ ] With X11 forwarding, similar experience to terminal Emacs inside tmux?
-6) [ ] GUI Features
+7) [ ] GUI Features
    - [ ] treemacs
    - [ ] lsp-mode
    - [ ] dap-mode?
+   - [ ] Company?
    - [ ] flycheck/flyspell?
-7) [ ] Beautify
+8) [ ] Beautify
    - [ ] ligatures?
    - [ ] icons?
    - [ ] fonts?
