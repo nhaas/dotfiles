@@ -113,7 +113,7 @@
 (use-package evil-nerd-commenter
   :after evil
   :config
-  (evilnc_default-hotkeys nil t) ; default keybindings in Evil only, not Emacs
+  (evilnc-default-hotkeys nil t) ; default keybindings in Evil only, not Emacs
   )
 
 (use-package evil-matchit
