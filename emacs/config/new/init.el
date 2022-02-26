@@ -60,10 +60,12 @@
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 
-(setq inhibit-startup-screen t) ; Go straight to *scratch* if no file is given
-(setq visible-bell t)           ; Set up the visible bell instead of audible 'ding'
-(menu-bar-mode -1)              ; Disable the menu bar
-(column-number-mode)            ; Show column position of the cursor as well as the row like this: (R, C)
+(setq inhibit-startup-screen t)   ; Go straight to *scratch* if no file is given
+(setq visible-bell t)             ; Set up the visible bell instead of audible 'ding'
+(menu-bar-mode -1)                ; Disable the menu bar
+(column-number-mode)              ; Show column position of the cursor as well as the row like this: (R, C)
+(show-paren-mode t)               ; Always highlight opposite parenthesis
+(defalias 'yes-or-no-p 'y-or-n-p) ; Always Use `y-or-n-p', Never `yes-or-no-p'
 
 ;; Turn on line numbers for all modes...
 (global-display-line-numbers-mode t)
@@ -83,6 +85,7 @@
 ;; ;; Set frame transparency
 ;; (set-frame-parameter (selected-frame) 'alpha efs/frame-transparency)
 ;; (add-to-list 'default-frame-alist `(alpha . ,efs/frame-transparency))
+;; ;; Always begin in fullscreen
 ;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
 ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
