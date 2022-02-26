@@ -4,7 +4,7 @@
 
 * Preface
 
-This configuration borrows heavily from [[https://github.com/daviwil/emacs-from-scratch][Emacs From Scratch]]. This file generates [[file:init.el][init.el]] which can be loaded by Emacs at startup. It took a bit to bootstrap it, but once it was working cleanly, then it could be used to edit itself.
+This configuration borrows heavily from [[https://github.com/daviwil/emacs-from-scratch][Emacs From Scratch]]. _This file_, the one you're looking at, generates [[file:init.el][init.el]] which can be loaded by Emacs at startup. It took a bit to bootstrap it, but once it was working cleanly, then it could be used to edit itself.
 
 #+begin_src emacs-lisp
 
@@ -154,6 +154,30 @@ This stuff seems relevant only to GUI Emacs
   ;; (add-to-list 'default-frame-alist `(alpha . ,efs/frame-transparency))
   ;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
   ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
+#+end_src
+
+** Keybinding Configuration
+
+*** Evil - extensible vi layer for Emacs
+
+This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil-mode]] for a Vi-like modal editing experience. It emulates the main features of Vim, and provides facilities for writing custom extensions.
+
+#+begin_src emacs-lisp
+  (use-package evil
+    :ensure t
+    :init
+    ;; The following solves the issue where TAB doesn't map to org-cycle in emacs
+    ;; -nw. It is necessary for this to occur *before* (require 'evil). See:
+    ;; https://stackoverflow.com/questions/22878668/emacs-org-mode-evil-mode-tab-key-not-working
+    (setq evil-want-C-i-jump nil)
+    :config
+    (evil-mode 1)
+    ;; 'Emacs way' to quite Insert mode
+    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+
+    ;; Use visual line motions even outside of visual-line-mode buffers
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
 #+end_src
 
 ** UI Configuration

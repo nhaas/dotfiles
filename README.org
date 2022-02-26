@@ -88,7 +88,8 @@ powerful frameworks like Doom or Spacemacs.
    - [X] auto-update-packages
    - [X] Keep various files out of the config
    - [X] eliminate custom.el altogether
-4) [ ] Evil
+4) [-] Keybindings
+   - [X] Evil
    - [ ] evil-surround
    - [ ] evil-nerd-commenter
    - [ ] evil-matchit?

@@ -86,6 +86,22 @@
 ;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
 ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+(use-package evil
+  :ensure t
+  :init
+  ;; The following solves the issue where TAB doesn't map to org-cycle in emacs
+  ;; -nw. It is necessary for this to occur *before* (require 'evil). See:
+  ;; https://stackoverflow.com/questions/22878668/emacs-org-mode-evil-mode-tab-key-not-working
+  (setq evil-want-C-i-jump nil)
+  :config
+  (evil-mode 1)
+  ;; 'Emacs way' to quite Insert mode
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+
+  ;; Use visual line motions even outside of visual-line-mode buffers
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+
 (load-theme 'tango-dark)
 
 (use-package which-key
