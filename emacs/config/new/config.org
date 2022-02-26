@@ -183,6 +183,38 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
     (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
 #+end_src
 
+**** evil-surround
+https://github.com/emacs-evil/evil-surround
+#+begin_src emacs-lisp
+  (use-package evil-surround
+    :after evil
+    :config
+    (global-evil-surround-mode 1))
+#+end_src
+
+**** evil-nerd-commenter
+https://github.com/redguardtoo/evil-nerd-commenter
+#+begin_src emacs-lisp
+  (use-package evil-nerd-commenter
+    :after evil
+    :config
+    (evilnc_default-hotkeys nil t) ; default keybindings in Evil only, not Emacs
+    )
+#+end_src
+
+**** evil-matchit
+
+Press “%” to jump between matched tags in Emacs. For example, in HTML “<div>” and “</div>” are a pair of tags.
+
+https://github.com/redguardtoo/evil-matchit
+
+#+begin_src emacs-lisp
+  (use-package evil-matchit
+    :after evil
+    :config
+    (global-evil-matchit-mode 1))
+#+end_src
+
 ** UI Configuration
 
 *** Color Theme

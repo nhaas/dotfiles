@@ -105,6 +105,22 @@
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
 
+(use-package evil-surround
+  :after evil
+  :config
+  (global-evil-surround-mode 1))
+
+(use-package evil-nerd-commenter
+  :after evil
+  :config
+  (evilnc_default-hotkeys nil t) ; default keybindings in Evil only, not Emacs
+  )
+
+(use-package evil-matchit
+  :after evil
+  :config
+  (global-evil-matchit-mode 1))
+
 (load-theme 'tango-dark)
 
 (use-package which-key

@@ -90,9 +90,9 @@ powerful frameworks like Doom or Spacemacs.
    - [X] eliminate custom.el altogether
 4) [-] Keybindings
    - [X] Evil
-   - [ ] evil-surround
-   - [ ] evil-nerd-commenter
-   - [ ] evil-matchit?
+   - [X] evil-surround
+   - [X] evil-nerd-commenter
+   - [X] evil-matchit
    - [ ] targets.el?
    - [ ] evil-args?
    - [ ] evil-cleverparens?
