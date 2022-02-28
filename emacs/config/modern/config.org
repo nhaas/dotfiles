@@ -237,7 +237,6 @@ I picked a theme that was better than the default for terminal usage.
 #+end_src
 
 * Assistants - Control the outside from within
-
 ** Magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit)

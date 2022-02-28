@@ -61,7 +61,7 @@ any reader. The following table outlines the different configurations contained 
 |------------+--------------+--------------------+-----------+--------------|
 | [[#legacy][Legacy]]     | =legacy=     | [[file:emacs/config/legacy/myinit.org][legacy/myinit.org]]  | Yes       | =e=          |
 | [[#evil-basic][Evil Basic]] | =evil-basic= | [[file:emacs/config/evil-basic/init.el][evil-basic/init.el]] | No        | =eb=         |
-| [[#new][New]]        | =new=        | [[file:emacs/config/new/config.org][new/config.org]]     | No        | =ne=         |
+| [[#modern][Modern]]     | =modern=     | [[file:emacs/config/modern/config.org][modern/config.org]]  | No        | =me=         |
 
 One quirkly aspect of these '[[https://wikemacs.org/wiki/Package.el][package.el]]'-based configurations is that they all download and install
 ELisp packages to a shared directory. This is atypical for Emacs, but it helps keep each
@@ -76,7 +76,7 @@ start anew and possibly switch to Doom altogether.
 A simple configuration for the native =vi= user who wants to dip a toe into Emacs or just wants the
 Org file to do its thing without much setup. It includes =org-mode= and =plantuml-mode=.
 
-** New
+** Modern
 Rediscover Emacs with a more modern approach. Test advanced features and pave the way towards more
 powerful frameworks like Doom or Spacemacs.
 1) [X] =use-package= to organize packages.

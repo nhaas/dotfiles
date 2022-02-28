@@ -27,4 +27,4 @@ function vimfd()
 # Emacs configurations
 alias  e="emacs --with-profile legacy"
 alias eb="emacs --with-profile evil-basic"
-alias ne="emacs --with-profile new"
+alias me="emacs --with-profile modern"
