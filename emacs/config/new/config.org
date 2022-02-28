@@ -4,7 +4,7 @@
 
 * Preface
 
-This configuration borrows heavily from [[https://github.com/daviwil/emacs-from-scratch][Emacs From Scratch]]. _This file_, the one you're looking at, generates [[file:init.el][init.el]] which can be loaded by Emacs at startup. It took a bit to bootstrap it, but once it was working cleanly, then it could be used to edit itself.
+This configuration borrows heavily from [[https://github.com/daviwil/emacs-from-scratch][Emacs From Scratch]]. /This file/, the one you're looking at, generates [[file:init.el][init.el]] which can be loaded by Emacs at startup. It took a bit to bootstrap it, but once it was working cleanly, then it could be used to edit itself.
 
 #+begin_src emacs-lisp
 
@@ -37,8 +37,8 @@ This configuration borrows heavily from [[https://github.com/daviwil/emacs-from-
 - [[#package-system-setup][Package System Setup]]
 - [[#general-setup][General Setup]]
 - [[#user-interface][User Interface]]
-- [[#packages][Packages]]
-- [[#packages-with-external-dependencies][Packages with external dependencies]]
+- [[#assistants---control-the-outside-from-within][Assistants - Control the outside from within]]
+- [[#development][Development]]
 - [[#org-mode][Org Mode]]
 #+END_QUOTE
 
@@ -236,21 +236,23 @@ I picked a theme that was better than the default for terminal usage.
     )
 #+end_src
 
-* Packages
-** Common Dependencies
-
-I try to avoid using =:after= to avoid confusion. It apparently allows for ordering the =(use-package)= commands however you choose, but it may make the whole config more verbose and more difficult to understand.
+* Assistants - Control the outside from within
 
 ** Magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit)
 #+END_SRC
 
-* Packages with external dependencies
 ** RipGrep
 #+BEGIN_SRC emacs-lisp
   (use-package rg)
 #+END_SRC
+
+* Development
+
+** Languages
+
+** IDE
 
 * Org Mode
 ** toc-org (Table of Contents for Org-mode)

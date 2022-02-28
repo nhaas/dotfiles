@@ -89,22 +89,23 @@ powerful frameworks like Doom or Spacemacs.
    - [X] Keep various files out of the config
    - [X] eliminate custom.el altogether
 4) [-] Keybindings
-   - [X] Evil
-   - [X] evil-surround
-   - [X] evil-nerd-commenter
-   - [X] evil-matchit
-   - [ ] targets.el?
-   - [ ] evil-args?
-   - [ ] evil-cleverparens?
-   - [ ] evil-escape?
-   - [ ] evil-exchange?
-   - [ ] evil-snipe?
-   - [ ] evil-easymotion?
-   - [ ] evil-goggles?
-   - [ ] goto-chg?
-   - [ ] evil-vimish-fold?
-   - [ ] evil-collection?
+   - [-] Evil
+     - [X] evil-surround
+     - [X] evil-nerd-commenter
+     - [X] evil-matchit
+     - [ ] targets.el?
+     - [ ] evil-args?
+     - [ ] evil-cleverparens?
+     - [ ] evil-escape?
+     - [ ] evil-exchange?
+     - [ ] evil-snipe?
+     - [ ] evil-easymotion?
+     - [ ] evil-goggles?
+     - [ ] goto-chg?
+     - [ ] evil-vimish-fold?
+     - [ ] evil-collection?
    - [ ] general.el?
+   - [ ] Hydra?
 5) [ ] Non-GUI IDE-like features
    - [ ] ripgrip
    - [ ] magit
@@ -121,9 +122,14 @@ powerful frameworks like Doom or Spacemacs.
    - [ ] Company?
    - [ ] flycheck/flyspell?
 8) [ ] Beautify
+   - [ ] rainbow delimiters
    - [ ] ligatures?
    - [ ] icons?
    - [ ] fonts?
+
+** Doom?
+
+** Straight.el?
 
 * Miscellaneous
 SSH connections to =github.com= appear to be completely blocked by the firewall. Only HTTPS
