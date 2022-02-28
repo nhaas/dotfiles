@@ -90,7 +90,6 @@
 ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 (use-package evil
-  :ensure t
   :init
   ;; The following solves the issue where TAB doesn't map to org-cycle in emacs
   ;; -nw. It is necessary for this to occur *before* (require 'evil). See:
@@ -135,7 +134,6 @@
 (use-package rg)
 
 (use-package toc-org
-  :ensure t
   :commands toc-org-enable
   :init (add-hook 'org-mode-hook 'toc-org-enable))
 

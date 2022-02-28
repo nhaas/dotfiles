@@ -167,7 +167,6 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
 
 #+begin_src emacs-lisp
   (use-package evil
-    :ensure t
     :init
     ;; The following solves the issue where TAB doesn't map to org-cycle in emacs
     ;; -nw. It is necessary for this to occur *before* (require 'evil). See:
@@ -257,7 +256,6 @@ I try to avoid using =:after= to avoid confusion. It apparently allows for order
 =toc-org= helps you to have an up-to-date table of contents in org files without exporting (useful primarily for readme files on GitHub).
 #+BEGIN_SRC emacs-lisp
   (use-package toc-org
-    :ensure t
     :commands toc-org-enable
     :init (add-hook 'org-mode-hook 'toc-org-enable))
 #+END_SRC
