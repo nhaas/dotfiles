@@ -112,6 +112,7 @@ powerful frameworks like Doom or Spacemacs.
    - [ ] Completion framework
    - [ ] snippets
    - [ ] projectile
+   - [ ] undo-tree
    - etc.
 6) [ ] Emacs client/daemon
    - [ ] With X11 forwarding, similar experience to terminal Emacs inside tmux?
@@ -126,6 +127,8 @@ powerful frameworks like Doom or Spacemacs.
    - [ ] ligatures?
    - [ ] icons?
    - [ ] fonts?
+9) [ ] Emacs 28
+   - [ ] =undo-redo=. What's that all about?
 
 ** Doom?
 
