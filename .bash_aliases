@@ -28,3 +28,4 @@ function vimfd()
 alias  e="emacs --with-profile legacy"
 alias eb="emacs --with-profile evil-basic"
 alias me="emacs --with-profile modern"
+alias de="emacs --with-profile doom"
