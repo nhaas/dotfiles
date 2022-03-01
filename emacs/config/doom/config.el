@@ -89,3 +89,9 @@
 ;; If you are using +tree:
 (after! undo-tree
   (setq undo-tree-auto-save-history nil))
+
+;;; Set-up PlantUML to my liking
+;; Evaluate before loading
+(defvar plantuml-indent-regexp-activate-start "NEVER MATCH THIS EXPRESSION") ; Don't indent on account of active region
+(defvar plantuml-indent-regexp-activate-end "NEVER MATCH THIS EXPRESSION")
+(setq plantuml-indent-level 2)
