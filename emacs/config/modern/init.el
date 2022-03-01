@@ -1,3 +1,5 @@
+;;; init.el -*- lexical-binding: t; -*-
+
 ;; NOTE: init.el is now generated from config.org.  Please edit that file
 ;;       and init.el will be generated automatically when saving!
 
@@ -16,8 +18,6 @@
 ;; Initialize package sources
 (require 'package)
 
-(setq package-archives '(("melpa-stable" . "https://melpa.org/packages/")))
-
 ;; Set directory where ELisp Packages are to be installed. Normally this
 ;; defaults to <user-emacs-directory>/elpa/, but this pollutes the
 ;; configuration(s). Plus, it opens up the possibility for different
@@ -29,6 +29,11 @@
 
 (package-initialize)
 
+;; Specify package sources
+(setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")
+                         ("melpa-stable" . "https://melpa.org/packages/")))
+
 ;; bootstrap use-package
 (setq package-enable-at-startup nil)
 (unless (package-installed-p 'use-package)
@@ -37,6 +42,9 @@
 
 (eval-when-compile
   (require 'use-package))
+
+;; (use-package delight :ensure t)
+;; (use-package use-package-ensure-system-package :ensure t)
 
 ;; Silently add ':ensure t' to all instances of use-package macro. use-package
 ;; will attempt to download any package that isn't already present.
