@@ -84,3 +84,8 @@
 
 ;; Disable confirmation to quiit Emacs
 (setq confirm-kill-emacs nil)
+
+;; Disabling persistent undo history
+;; If you are using +tree:
+(after! undo-tree
+  (setq undo-tree-auto-save-history nil))
