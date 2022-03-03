@@ -103,3 +103,35 @@
 
 ;; Don't continue the comment when pressing =o=/=O=
 (setq +evil-want-o/O-to-continue-comments nil)
+
+;;; format
+
+;; Executbles must be found in PATH as stated in format-all--executable-table.
+;; For example:
+;; #+begin_src sh
+;; ln -s /usr/bin/clang-format-3.9 /usr/bin/clang-format
+;; #+end_src
+
+;; clang-format (the executable) needs to find '.clang-format' in the current
+;; directory or any parent directory. This method will copy the format file to
+;; the current directory, then call whatever function it has been wrapped
+;; around, then delete the file. This is exactly what the 'cformat' bash
+;; function does. The advantage of this is that you never need to leave Emacs,
+;; nor do you need to figure out how to find the file of the current buffer.
+(defun prep-formatter (orig-fun &rest args)
+  (pcase (derived-mode-p major-mode)
+    ;; For C modes...
+    ('c-mode (let((src-file "~/format/ABC.clang-format")
+                  (dst-file ".clang-format"))
+               ;; copy .clang-format to the cwd
+               (copy-file src-file dst-file "-f")
+               ;; let +format/region-or-buffer do it's thing
+               (apply orig-fun args)
+               ;; delete .clang-format
+               (delete-file dst-file)))
+    ;; For all other modes, let +format/region-or-buffer do it's thing
+    (else-mode (apply orig-fun args))))
+
+;; Wrap/"advise" my 'prep-formatter function AROUND Doom's 'format' module
+;; function (bound to "SPC c f").
+(advice-add '+format/region-or-buffer :around #'prep-formatter)
