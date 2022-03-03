@@ -100,3 +100,6 @@
 (use-package! visual-regexp
   :bind (("C-C r" . vr/replace)
          ("C-c q" . vr/query-replace)))
+
+;; Don't continue the comment when pressing =o=/=O=
+(setq +evil-want-o/O-to-continue-comments nil)
