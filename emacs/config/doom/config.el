@@ -95,3 +95,8 @@
 (defvar plantuml-indent-regexp-activate-start "NEVER MATCH THIS EXPRESSION") ; Don't indent on account of active region
 (defvar plantuml-indent-regexp-activate-end "NEVER MATCH THIS EXPRESSION")
 (setq plantuml-indent-level 2)
+
+;; Configure visual-regexp
+(use-package! visual-regexp
+  :bind (("C-C r" . vr/replace)
+         ("C-c q" . vr/query-replace)))
