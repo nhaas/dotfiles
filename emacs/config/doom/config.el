@@ -135,3 +135,44 @@
 ;; Wrap/"advise" my 'prep-formatter function AROUND Doom's 'format' module
 ;; function (bound to "SPC c f").
 (advice-add '+format/region-or-buffer :around #'prep-formatter)
+
+;;;; Replace all at point
+;; Grabs the symbol under point, prompts for a replacement string, and then does the replacement through the buffer. Point moves to original symbol (appears not to move in most instances). Borrowed from 'Isearch with symbol'.
+;; TODO: Point to does not always return to its original place before invokation.
+(defun my-replace-all (x &optional partailp backward)
+  "Grabs the symbol under point, prompts for a replacement
+string, and then does the replacement through the buffer."
+  (interactive "sReplace symbol at point with: ")
+  (let (from to bound sym)
+    (setq sym
+          ;; this block taken directly from find-tag-default
+          ;; we couldn't use the function because we need the internal from and to values
+          (when (or (progn
+                      ;; Look at text around `point'.
+                      (save-excursion
+                        (skip-syntax-backward "w_") (setq from (point)))
+                      (save-excursion
+                        (skip-syntax-forward "w_") (setq to (point)))
+                      (> to from))
+                    ;; Look between `line-beginning-position' and `point'.
+                    (save-excursion
+                      (and (setq bound (line-beginning-position))
+                           (skip-syntax-backward "^w_" bound)
+                           (> (setq to (point)) bound)
+                           (skip-syntax-backward "w_")
+                           (setq from (point))))
+                    ;; Look between `point' and `line-end-position'.
+                    (save-excursion
+                      (and (setq bound (line-end-position))
+                           (skip-syntax-forward "^w_" bound)
+                           (< (setq from (point)) bound)
+                           (skip-syntax-forward "w_")
+                           (setq to (point)))))
+            (buffer-substring-no-properties from to)))
+    (if (null sym)
+        (message "No symbol at point")
+      (goto-char (1- to))
+      ;; Once we have symbol, do the replacement
+      (replace-string sym x t (point-min) (point-max)))))
+
+(define-key search-map "r" 'my-replace-all) ;; "M-s r"
