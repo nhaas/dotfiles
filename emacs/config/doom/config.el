@@ -180,3 +180,11 @@ string, and then does the replacement through the buffer."
       (replace-string sym x t (point-min) (point-max)))))
 
 (define-key search-map "r" 'my-replace-all) ;; "M-s r"
+
+;;; lookup
+;; =dumb-jump= has a list of files/dirs that it uses to determine if a directory
+;; is the project root. One of them is Makefile. Remove it from that list since
+;; there are potentially many Makefiles in a project. If the real project root
+;; cannot be found, add .dumbjump or .git/ to establish it as a project root.
+(after! dumb-jump
+  (delete "Makefile" dumb-jump-project-denoters))
