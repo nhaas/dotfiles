@@ -104,6 +104,10 @@
 ;; Don't continue the comment when pressing =o=/=O=
 (setq +evil-want-o/O-to-continue-comments nil)
 
+;; Explicitly add hook for ibuffer-projectile
+;; TODO: why isn't Doom modules use-package :hook working?
+(add-hook 'ibuffer-hook #'ibuffer-projectile-set-filter-groups)
+
 ;;; format
 
 ;; Executbles must be found in PATH as stated in format-all--executable-table.
