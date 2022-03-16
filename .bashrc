@@ -13,7 +13,7 @@ export PYTHONSTARTUP=${HOME}/.pythonrc
 export EDITOR="emacs"
 # export EMACS_VERSION=26.2
 # export EMACS_PATH="/pkg/qct/software/emacs/${EMACS_VERSION}/bin"
-export DOOMDIR="~/dotfiles/emacs/config/doom"
+export DOOMDIR=~/dotfiles/emacs/config/doom
 
 # PATH alterations
 # export PATH=${PATH}:/prj/qct/asw/qctss/linux/bin
