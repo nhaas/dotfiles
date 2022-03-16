@@ -142,7 +142,7 @@ There is no "stable" branch and I don't know how often releases are made, so I h
 *** Usage
 Because Doom uses [[https://github.com/raxod502/straight.el][straight.el]] as its package manager, be sure to run =doom sync= whenever changes are made to the configuration. The [[https://github.com/hlissner/doom-emacs/blob/master/docs/getting_started.org#the-bindoom-utility][documentation]] specificies to "run this whenver you modify the =doom!= block or =packages.el= file."
 
-Also, since Chemacs sets =DOOMDIR= environment variable when loading Emacs, =DOOMDIR= must also be set when invoking =doom= command (e.g. =doom sync=) from the shell/terminal.
+=DOOMDIR= must also be set when invoking =doom= command (e.g. =doom sync=) from the shell/terminal. Chemacs sets =DOOMDIR= environment variable when loading Emacs, but this will not affect shell commands.
 
 *** Prerequisites
 At this time, Doom requires the following to work properly:
@@ -158,6 +158,11 @@ At this time, Doom requires the following to work properly:
 3) ripgrep 11.0+
 4) GNU =find=
 5) OPTIONAL: fd 7.3.0+ (improves file indexing performance for some commands)
+
+*** TODO-list
+- [ ] evil-surround not recognizing ("<" . ">") pairs?
+- [ ] Doom modules `use-package` :hook not working for ibuffer-hook (group buffers by projectile root)
+- [ ] Point does not always return to original place before invokation of my-replace-all
 
 ** Straight.el?
 
