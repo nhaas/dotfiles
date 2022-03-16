@@ -188,3 +188,23 @@ string, and then does the replacement through the buffer."
 ;; cannot be found, add .dumbjump or .git/ to establish it as a project root.
 (after! dumb-jump
   (delete "Makefile" dumb-jump-project-denoters))
+
+;;;; query-swap-regexp
+;; Swap A and B regexp matches in current buffer or region.
+(defun nh/query-swap-regexp (regexp-a regexp-b)
+  "Swap A and B regexp matches in current buffer or region."
+  (interactive "sRegexp A: \nsRegexp B: ")
+  (let ((match-a (save-excursion
+                   (re-search-forward regexp-a nil t)
+                   (match-string 0)))
+        (match-b (save-excursion
+                   (re-search-forward regexp-b nil t)
+                   (match-string 0))))
+    (query-replace-regexp
+     (concat "\\(\\(" regexp-a "\\)\\|" regexp-b "\\)")
+     `(replace-eval-replacement
+       replace-quote
+       (if (match-string 2) ,match-b ,match-a))
+     nil
+     (if (and transient-mark-mode mark-active) (region-beginning))
+     (if (and transient-mark-mode mark-active) (region-end)))))
