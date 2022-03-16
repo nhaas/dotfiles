@@ -122,7 +122,7 @@
 ;; around, then delete the file. This is exactly what the 'cformat' bash
 ;; function does. The advantage of this is that you never need to leave Emacs,
 ;; nor do you need to figure out how to find the file of the current buffer.
-(defun prep-formatter (orig-fun &rest args)
+(defun nh/prep-formatter (orig-fun &rest args)
   (pcase (derived-mode-p major-mode)
     ;; For C modes...
     ('c-mode (let((src-file "~/format/ABC.clang-format")
@@ -136,14 +136,14 @@
     ;; For all other modes, let +format/region-or-buffer do it's thing
     (else-mode (apply orig-fun args))))
 
-;; Wrap/"advise" my 'prep-formatter function AROUND Doom's 'format' module
+;; Wrap/"advise" my 'nh/prep-formatter function AROUND Doom's 'format' module
 ;; function (bound to "SPC c f").
-(advice-add '+format/region-or-buffer :around #'prep-formatter)
+(advice-add '+format/region-or-buffer :around #'nh/prep-formatter)
 
 ;;;; Replace all at point
 ;; Grabs the symbol under point, prompts for a replacement string, and then does the replacement through the buffer. Point moves to original symbol (appears not to move in most instances). Borrowed from 'Isearch with symbol'.
 ;; TODO: Point to does not always return to its original place before invokation.
-(defun my-replace-all (x &optional partailp backward)
+(defun nh/replace-all-symbol-current-buffer (x &optional partailp backward)
   "Grabs the symbol under point, prompts for a replacement
 string, and then does the replacement through the buffer."
   (interactive "sReplace symbol at point with: ")
@@ -179,7 +179,7 @@ string, and then does the replacement through the buffer."
       ;; Once we have symbol, do the replacement
       (replace-string sym x t (point-min) (point-max)))))
 
-(define-key search-map "r" 'my-replace-all) ;; "M-s r"
+(define-key search-map "r" 'nh/replace-all-symbol-current-buffer) ;; "M-s r"
 
 ;;; lookup
 ;; =dumb-jump= has a list of files/dirs that it uses to determine if a directory
