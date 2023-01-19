@@ -41,6 +41,7 @@ export PERL5LIB="/local/mnt/workspace/Git-FastExport-0.07/blib/lib/"
 export WORKSPACE="/local/mnt/workspace"
 export WORKSPACE2="/local/mnt2/workspace2"
 export WORKSPACE3="/local/mnt3/workspace3"
+export SECTOOLS="/pkg/sectools/v2/latest/Linux/sectools"
 
 # Rust things
 export PATH=${PATH}:$HOME/.cargo/bin
