@@ -54,8 +54,8 @@ chosen. Alternatively, the user may provide the profile name on the command line
 
 * Emacs Configurations
 I am constantly tinkering with my Emacs configuration (probably too much) and love the flexibility
-that Chemacs2 (see [[#chemacs2][above]]) affords me. I also strive for meaningful docuemntation - for myself and
-any reader. The following table outlines the different configurations contained in this repo.
+that Chemacs2 (see [[#chemacs2][above]]) affords me. I also strive for meaningful documntation - for myself and any
+reader. The following table outlines the different configurations contained in this repo.
 
 | *Name*     | *Profile*    | *Configuration*    | *Default* | *Bash Alias* |
 |------------+--------------+--------------------+-----------+--------------|
