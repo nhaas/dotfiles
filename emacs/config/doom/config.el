@@ -208,3 +208,33 @@ string, and then does the replacement through the buffer."
      nil
      (if (and transient-mark-mode mark-active) (region-beginning))
      (if (and transient-mark-mode mark-active) (region-end)))))
+
+;; As of Org Mode 9.2, I can no longer TAB-complete src-code block abbreviation '<s'. Org mode now
+;; provides some built-in template function that can be called with `C-c C-,`, but that doesn't work
+;; across PuTTY + tmux for some reason. Instead, I found this solution to be quite helpful
+;; http://wenshanren.org/?p=334.
+(defun nh/org-insert-src-block (src-code-type)
+  "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
+  (interactive
+   (let ((src-code-types
+          '("emacs-lisp" "python" "C" "sh" "java" "js" "clojure" "C++" "css"
+            "calc" "asymptote" "dot" "gnuplot" "ledger" "lilypond" "mscgen"
+            "octave" "oz" "plantuml" "R" "sass" "screen" "sql" "awk" "ditaa"
+            "haskell" "latex" "lisp" "matlab" "ocaml" "org" "perl" "ruby"
+            "scheme" "sqlite")))
+     (list (ido-completing-read "Source code type: " src-code-types))))
+  (progn
+    ;; (newline-and-indent)
+    (insert (format "#+BEGIN_SRC %s\n" src-code-type))
+    (newline-and-indent)
+    (insert "#+END_SRC\n")
+    (previous-line 2)
+    (org-edit-src-code)))
+
+;; Add new key-binding in the =org-mode-hook=
+(add-hook 'org-mode-hook
+          (lambda ()
+            ;; keybinding for inserting code blocks
+            (local-set-key (kbd "C-c s i")
+                           'nh/org-insert-src-block)
+            ))
