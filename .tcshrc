@@ -1,0 +1,3 @@
+# In case the default SHELL gets reset to /bin/tcsh, set colors to 256 or else everything looks like
+# ... *checks notes * ... trash.
+setenv TERM xterm-256color
