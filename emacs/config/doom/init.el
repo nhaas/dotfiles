@@ -14,6 +14,11 @@
 ;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
 ;;      directory (for easy access to its source code).
 
+;; Movement respects visual lines, not actual lines.
+;; This must be set BEFORE evil is loaded -> https://www.reddit.com/r/DoomEmacs/comments/unvhrc/how_to_get_default_vim_visual_line_behavior/
+;; https://evil.readthedocs.io/en/latest/settings.html#elispobj-evil-respect-visual-line-mode
+(setq evil-respect-visual-line-mode t)
+
 (doom! :input
        ;;chinese
        ;;japanese
