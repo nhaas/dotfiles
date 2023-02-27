@@ -78,6 +78,10 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+;; Log org TODOs into a LOGBOOK drawer. Doom default is to add entries as unsorted list.
+(after! org
+  (setq org-log-into-drawer 'LOGBOOK))
+
 ;; Disable highlighting current line. It makes the current line unreadable in
 ;; the terminal.
 (remove-hook 'doom-first-buffer-hook #'global-hl-line-mode)
