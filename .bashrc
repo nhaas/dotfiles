@@ -44,7 +44,7 @@ export WORKSPACE3="/local/mnt3/workspace3"
 export SECTOOLS="/pkg/sectools/v2/latest/Linux/sectools"
 
 # Rust things
-export PATH=${PATH}:$HOME/.cargo/bin
+export PATH=$HOME/.cargo/bin:${PATH}
 export RUSTUP_HOME=/local/mnt/workspace/rust/.rustup # Move from default ($HOME), since it fills up ~/.snapshot
 
 if [ -d "/local2/mnt/workspace/.ccache" ]; then
