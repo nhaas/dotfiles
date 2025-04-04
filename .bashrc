@@ -541,7 +541,6 @@ function tzsetupproj
             echo "$project already initialized"
         else
             echo $project
-            cp $WORKSPACE/format/clang-8-format ./.clang-format
             cp ~/.gitignore_"$project" .gitignore
             git init
             git add .gitignore
@@ -565,11 +564,4 @@ function tzsetup
     tzsetupproj uclib
     tzsetupproj ssg
     popd
-}
-
-function cformat
-{
-    cp /net/nhaas-linux/local/mnt/workspace/format/ABC.clang-format ./.clang-format
-    clang-format-8 -i $1 -style=file
-    rm -f ./.clang-format
 }
