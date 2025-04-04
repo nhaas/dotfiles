@@ -5,7 +5,16 @@ export TERMCAP=
 
 source ${HOME}/.bash_aliases
 
+export WORKSPACE="/local/mnt/workspace"
+export WORKSPACE2="/local/mnt2/workspace2"
+export WORKSPACE3="/local/mnt3/workspace3"
+
+# Python
 export PYTHONSTARTUP=${HOME}/.pythonrc
+export PYTHONUSERBASE=${WORKSPACE}/python/.local
+export PIP_CACHE_DIR=${WORKSPACE}/pip_cache
+export PATH=${PYTHONUSERBASE}/bin:${PATH}
+
 # alias python="/pkg/qct/software/python/3.6.0/bin/python"
 # alias pydoc="/pkg/qct/software/python/3.6.0/bin/pydoc3"
 
@@ -14,6 +23,8 @@ export EDITOR="emacs"
 # export EMACS_VERSION=26.2
 # export EMACS_PATH="/pkg/qct/software/emacs/${EMACS_VERSION}/bin"
 export DOOMDIR=~/dotfiles/emacs/config/doom
+# Root directory for local storage. Use this as a storage location for this system's installation of Doom Emacs.
+export DOOMLOCALDIR=${WORKSPACE}/doom/local/
 
 # PATH alterations
 # export PATH=${PATH}:/prj/qct/asw/qctss/linux/bin
@@ -38,14 +49,15 @@ export GREPOPTIONS=" --color=always -n --exclude=tags"
 export PERL5LIB="/local/mnt/workspace/Git-FastExport-0.07/blib/lib/"
 
 # SSG Setup
-export WORKSPACE="/local/mnt/workspace"
-export WORKSPACE2="/local/mnt2/workspace2"
-export WORKSPACE3="/local/mnt3/workspace3"
 export SECTOOLS="/pkg/sectools/v2/latest/Linux/sectools"
 
 # Rust things
-export PATH=$HOME/.cargo/bin:${PATH}
-export RUSTUP_HOME=/local/mnt/workspace/rust/.rustup # Move from default ($HOME), since it fills up ~/.snapshot
+# Don't clog up /usr2/<userid> and ~/.snapshot with cargo / rustup bins
+export CARGO_HOME=${WORKSPACE}/cargo
+export RUSTUP_HOME=${WORKSPACE}/rustup # Move from default ($HOME), since it fills up ~/.snapshot
+export PATH=$PATH:$CARGO_HOME/bin
+# `rustc --print=sysroot` tells you where the llvm bins can be found
+export PATH=${PATH}:${RUSTUP_HOME}/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin
 
 if [ -d "/local2/mnt/workspace/.ccache" ]; then
     #echo "ccache is present in this machine"
