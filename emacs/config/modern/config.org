@@ -3,14 +3,16 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
 * Preface
+Make this file run (slightly) faster with lexical binding (see [[https://nullprogram.com/blog/2016/12/22/][this blog post]] for more info).
+#+begin_src emacs-lisp :comments no
+  ;;; init.el -*- lexical-binding: t; -*-
+#+end_src
 
 This configuration borrows heavily from [[https://github.com/daviwil/emacs-from-scratch][Emacs From Scratch]]. /This file/, the one you're looking at, generates [[file:init.el][init.el]] which can be loaded by Emacs at startup. It took a bit to bootstrap it, but once it was working cleanly, then it could be used to edit itself.
 
 #+begin_src emacs-lisp
-
   ;; NOTE: init.el is now generated from config.org.  Please edit that file
   ;;       and init.el will be generated automatically when saving!
-
 #+end_src
 
 ** Startup Performance
@@ -50,8 +52,6 @@ Emacs has a built in package manager but it doesn't make it easy to automaticall
   ;; Initialize package sources
   (require 'package)
 
-  (setq package-archives '(("melpa-stable" . "https://melpa.org/packages/")))
-
   ;; Set directory where ELisp Packages are to be installed. Normally this
   ;; defaults to <user-emacs-directory>/elpa/, but this pollutes the
   ;; configuration(s). Plus, it opens up the possibility for different
@@ -62,7 +62,24 @@ Emacs has a built in package manager but it doesn't make it easy to automaticall
   (setq package-gnupghome-dir "~/elpa/gnupg")
 
   (package-initialize)
+#+end_src
 
+** Package Sources
+
+To install packages, it is useful to configure the package sources. I believe the order is the priority for finding a package. Whether or not that makes a difference, I'm not sure.
+
+#+begin_src emacs-lisp
+  ;; Specify package sources
+  (setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
+                           ("melpa" . "https://melpa.org/packages/")
+                           ("melpa-stable" . "https://melpa.org/packages/")))
+#+end_src
+
+** Package Configurations
+
+To manage the package configurations with =use-package=, you must install it with the following code snippet.
+
+#+begin_src emacs-lisp
   ;; bootstrap use-package
   (setq package-enable-at-startup nil)
   (unless (package-installed-p 'use-package)
@@ -71,6 +88,9 @@ Emacs has a built in package manager but it doesn't make it easy to automaticall
 
   (eval-when-compile
     (require 'use-package))
+
+  ;; (use-package delight :ensure t)
+  ;; (use-package use-package-ensure-system-package :ensure t)
 
   ;; Silently add ':ensure t' to all instances of use-package macro. use-package
   ;; will attempt to download any package that isn't already present.
@@ -167,7 +187,6 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
 
 #+begin_src emacs-lisp
   (use-package evil
-    :ensure t
     :init
     ;; The following solves the issue where TAB doesn't map to org-cycle in emacs
     ;; -nw. It is necessary for this to occur *before* (require 'evil). See:
@@ -258,7 +277,6 @@ I picked a theme that was better than the default for terminal usage.
 =toc-org= helps you to have an up-to-date table of contents in org files without exporting (useful primarily for readme files on GitHub).
 #+BEGIN_SRC emacs-lisp
   (use-package toc-org
-    :ensure t
     :commands toc-org-enable
     :init (add-hook 'org-mode-hook 'toc-org-enable))
 #+END_SRC
