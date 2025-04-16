@@ -176,4 +176,11 @@ At this time, Doom requires the following to work properly:
 * Miscellaneous
 SSH connections to =github.com= appear to be completely blocked by the firewall. Only HTTPS
 connections are allowed for =push= / =pull=. For =push= ing to this repo, you will need a [[https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token][Personal
-Access Token (PAT)]] because username/password are disallowed for security reasons.
+Access Token (PAT)]] because username/password are disallowed for security reasons. Substitute the PAT
+for the normal password when git requests username/password.
+
+To make this less painful, we can setup git to store/cache the passwords for some amount of time.
+#+BEGIN_SRC sh
+git config --global credential.helper 'cache --timeout=10000000'
+#+END_SRC
+This solution is not ideal because the cache will expire after ~4 months. Alt
