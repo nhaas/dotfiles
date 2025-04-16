@@ -9,6 +9,24 @@ export WORKSPACE="/local/mnt/workspace"
 export WORKSPACE2="/local/mnt2/workspace2"
 export WORKSPACE3="/local/mnt3/workspace3"
 
+# SSH / Git
+#
+# To start ssh-agent once and have the SSH_AUTH_SOCK variable persist across new
+# terminal sessions, a common approach involves setting a fixed socket path and
+# ensuring the agent starts only if it's not already running.
+#
+# It first defines a fixed path for the SSH_AUTH_SOCK. Then, it checks if an
+# ssh-agent process is already running. If not, it removes any existing socket
+# file at the defined path and starts ssh-agent with the -a option to specify
+# the socket path. Finally, it exports the SSH_AUTH_SOCK variable to ensure it's
+# available in the current and subsequent shell sessions.
+SSH_AUTH_SOCK="/tmp/ssh-agent.sock"
+if ! pgrep -x "ssh-agent" > /dev/null; then
+  rm -f "$SSH_AUTH_SOCK"
+  ssh-agent -a "$SSH_AUTH_SOCK" > /dev/null
+fi
+export SSH_AUTH_SOCK
+
 # Python
 export PYTHONSTARTUP=${HOME}/.pythonrc
 export PYTHONUSERBASE=${WORKSPACE}/python/.local
