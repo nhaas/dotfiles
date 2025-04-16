@@ -5,7 +5,34 @@ export TERMCAP=
 
 source ${HOME}/.bash_aliases
 
+export WORKSPACE="/local/mnt/workspace"
+export WORKSPACE2="/local/mnt2/workspace2"
+export WORKSPACE3="/local/mnt3/workspace3"
+
+# SSH / Git
+#
+# To start ssh-agent once and have the SSH_AUTH_SOCK variable persist across new
+# terminal sessions, a common approach involves setting a fixed socket path and
+# ensuring the agent starts only if it's not already running.
+#
+# It first defines a fixed path for the SSH_AUTH_SOCK. Then, it checks if an
+# ssh-agent process is already running. If not, it removes any existing socket
+# file at the defined path and starts ssh-agent with the -a option to specify
+# the socket path. Finally, it exports the SSH_AUTH_SOCK variable to ensure it's
+# available in the current and subsequent shell sessions.
+SSH_AUTH_SOCK="/tmp/ssh-agent.sock"
+if ! pgrep -x "ssh-agent" > /dev/null; then
+  rm -f "$SSH_AUTH_SOCK"
+  ssh-agent -a "$SSH_AUTH_SOCK" > /dev/null
+fi
+export SSH_AUTH_SOCK
+
+# Python
 export PYTHONSTARTUP=${HOME}/.pythonrc
+export PYTHONUSERBASE=${WORKSPACE}/python/.local
+export PIP_CACHE_DIR=${WORKSPACE}/pip_cache
+export PATH=${PYTHONUSERBASE}/bin:${PATH}
+
 # alias python="/pkg/qct/software/python/3.6.0/bin/python"
 # alias pydoc="/pkg/qct/software/python/3.6.0/bin/pydoc3"
 
@@ -13,6 +40,9 @@ export PYTHONSTARTUP=${HOME}/.pythonrc
 export EDITOR="emacs"
 # export EMACS_VERSION=26.2
 # export EMACS_PATH="/pkg/qct/software/emacs/${EMACS_VERSION}/bin"
+export DOOMDIR=~/dotfiles/emacs/config/doom
+# Root directory for local storage. Use this as a storage location for this system's installation of Doom Emacs.
+export DOOMLOCALDIR=${WORKSPACE}/doom/local/
 
 # PATH alterations
 # export PATH=${PATH}:/prj/qct/asw/qctss/linux/bin
@@ -43,8 +73,12 @@ export WORKSPACE3="/local/mnt3/workspace3"
 export SECTOOLS="/pkg/sectools/v2/latest/Linux/sectools"
 
 # Rust things
-export PATH=${PATH}:$HOME/.cargo/bin
-export RUSTUP_HOME=/local/mnt/workspace/rust/.rustup # Move from default ($HOME), since it fills up ~/.snapshot
+# Don't clog up /usr2/<userid> and ~/.snapshot with cargo / rustup bins
+export CARGO_HOME=${WORKSPACE}/cargo
+export RUSTUP_HOME=${WORKSPACE}/rustup # Move from default ($HOME), since it fills up ~/.snapshot
+export PATH=$PATH:$CARGO_HOME/bin
+# `rustc --print=sysroot` tells you where the llvm bins can be found
+export PATH=${PATH}:${RUSTUP_HOME}/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin
 
 if [ -d "/local2/mnt/workspace/.ccache" ]; then
     #echo "ccache is present in this machine"
@@ -528,7 +562,6 @@ function tzsetupproj
             echo "$project already initialized"
         else
             echo $project
-            cp $WORKSPACE/format/clang-8-format ./.clang-format
             cp ~/.gitignore_"$project" .gitignore
             git init
             git add .gitignore
@@ -552,11 +585,4 @@ function tzsetup
     tzsetupproj uclib
     tzsetupproj ssg
     popd
-}
-
-function cformat
-{
-    cp /net/nhaas-linux/local/mnt/workspace/format/ABC.clang-format ./.clang-format
-    clang-format-8 -i $1 -style=file
-    rm -f ./.clang-format
 }

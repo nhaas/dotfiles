@@ -62,6 +62,7 @@ reader. The following table outlines the different configurations contained in t
 | [[#legacy][Legacy]]     | =legacy=     | [[file:emacs/config/legacy/myinit.org][legacy/myinit.org]]  | Yes       | =e=          |
 | [[#evil-basic][Evil Basic]] | =evil-basic= | [[file:emacs/config/evil-basic/init.el][evil-basic/init.el]] | No        | =eb=         |
 | [[#modern][Modern]]     | =modern=     | [[file:emacs/config/modern/config.org][modern/config.org]]  | No        | =me=         |
+| [[#doom][Doom]]       | =doom=       | [[file:emacs/config/doom/init.el][doom/init.el]]       | No        | =de=         |
 
 One quirkly aspect of these '[[https://wikemacs.org/wiki/Package.el][package.el]]'-based configurations is that they all download and install
 ELisp packages to a shared directory. This is atypical for Emacs, but it helps keep each
@@ -134,7 +135,41 @@ powerful frameworks like Doom or Spacemacs.
 
 ** Straight.el?
 
-** Doom?
+** Doom
+
+*** Introduction
+#+begin_quote
+Doom is a configuration framework for GNU Emacs tailored for Emacs bankruptcy veterans who want less framework in their frameworks, a modicum of stability (and reproducibility) from their package manager, and the performance of a hand rolled config (or better). It can be a foundation for your own config or a resource for Emacs enthusiasts to learn more about our favorite operating system.
+#+end_quote
+
+Doom does things differently as a bit more hands-off. In exchange for less fine-tune control over your configuration, you can leverage the knowledge and work of many others.
+
+There is no "stable" branch and I don't know how often releases are made, so I have included it as a submodule to this repository for stability.
+
+*** Usage
+Because Doom uses [[https://github.com/raxod502/straight.el][straight.el]] as its package manager, be sure to run =doom sync= whenever changes are made to the configuration. The [[https://github.com/hlissner/doom-emacs/blob/master/docs/getting_started.org#the-bindoom-utility][documentation]] specificies to "run this whenver you modify the =doom!= block or =packages.el= file."
+
+=DOOMDIR= must also be set when invoking =doom= command (e.g. =doom sync=) from the shell/terminal. Chemacs sets =DOOMDIR= environment variable when loading Emacs, but this will not affect shell commands.
+
+*** Prerequisites
+At this time, Doom requires the following to work properly:
+1) Git 2.23+
+   - To install latest Git (Ubuntu)
+     #+BEGIN_SRC sh
+       sudo add-apt-repository ppa:git-core/ppa
+       sudo apt update
+       sudo apt install git
+     #+END_SRC
+
+2) Emacs 27.1 (27.2 is recommended, or native-comp. 29+ is not supported).
+3) ripgrep 11.0+
+4) GNU =find=
+5) OPTIONAL: fd 7.3.0+ (improves file indexing performance for some commands)
+
+*** TODO-list
+- [ ] evil-surround not recognizing ("<" . ">") pairs?
+- [ ] Doom modules `use-package` :hook not working for ibuffer-hook (group buffers by projectile root)
+- [ ] Point does not always return to original place before invokation of my-replace-all
 
 ** Straight.el?
 
