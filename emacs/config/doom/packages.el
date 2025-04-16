@@ -16,6 +16,10 @@
 ;; Group buffers by projectile project in Ibuffer
 (package! ibuffer-projectile)
 
+;; Support for YAML mode
+(package! outline-yaml
+  :recipe (:host github :repo "jamescherti/outline-yaml.el"))
+
 ;; Diff directories recursively
 ;; The mainline of this package is held in codeberg, which I cannot access
 ;; from within the company firewall. Use the mirror on github instead.
