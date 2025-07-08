@@ -14,7 +14,8 @@ To facilitate linking of files from this repo to the $HOME directory, ensure =st
 
 As this repo contains submodules, clone using the following command to retrieve all necessary files.
 #+BEGIN_SRC sh
-  git clone <URL-of-dotfiles-repo> dotfiles --recursive
+  cd ~
+  git clone git@github.com:nhaas/dotfiles.git dotfiles --recursive
 #+END_SRC
 
 Once complete, load the files into the $HOME directory.
