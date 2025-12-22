@@ -60,10 +60,10 @@ reader. The following table outlines the different configurations contained in t
 
 | *Name*     | *Profile*    | *Configuration*    | *Default* | *Bash Alias* |
 |------------+--------------+--------------------+-----------+--------------|
-| [[#legacy][Legacy]]     | =legacy=     | [[file:emacs/config/legacy/myinit.org][legacy/myinit.org]]  | Yes       | =e=          |
+| [[#legacy][Legacy]]     | =legacy=     | [[file:emacs/config/legacy/myinit.org][legacy/myinit.org]]  | No        | =e=          |
 | [[#evil-basic][Evil Basic]] | =evil-basic= | [[file:emacs/config/evil-basic/init.el][evil-basic/init.el]] | No        | =eb=         |
 | [[#modern][Modern]]     | =modern=     | [[file:emacs/config/modern/config.org][modern/config.org]]  | No        | =me=         |
-| [[#doom][Doom]]       | =doom=       | [[file:emacs/config/doom/init.el][doom/init.el]]       | No        | =de=         |
+| [[#doom][Doom]]       | =doom=       | [[file:emacs/config/doom/init.el][doom/init.el]]       | Yes       | =de=         |
 
 One quirkly aspect of these '[[https://wikemacs.org/wiki/Package.el][package.el]]'-based configurations is that they all download and install
 ELisp packages to a shared directory. This is atypical for Emacs, but it helps keep each
@@ -155,14 +155,7 @@ Because Doom uses [[https://github.com/raxod502/straight.el][straight.el]] as it
 *** Prerequisites
 At this time, Doom requires the following to work properly:
 1) Git 2.23+
-   - To install latest Git (Ubuntu)
-     #+BEGIN_SRC sh
-       sudo add-apt-repository ppa:git-core/ppa
-       sudo apt update
-       sudo apt install git
-     #+END_SRC
-
-2) Emacs 27.1 (27.2 is recommended, or native-comp. 29+ is not supported).
+2) Emacs 27.1-30.2 (30.2 is recommended).
 3) ripgrep 11.0+
 4) GNU =find=
 5) OPTIONAL: fd 7.3.0+ (improves file indexing performance for some commands)
