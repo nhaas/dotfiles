@@ -242,3 +242,12 @@ string, and then does the replacement through the buffer."
             (local-set-key (kbd "C-c s i")
                            'nh/org-insert-src-block)
             ))
+
+;; Associate *.gn files with GN (generate ninja)
+;; These are used in the Hafnium project
+(add-to-list 'auto-mode-alist '("\\.gn\\'" . gn-mode))
+;; Add GN grammar source since Doom doesn't provide it out of the box
+(after! treesit
+  (add-to-list 'treesit-language-source-alist
+               '(gn "https://github.com/tree-sitter-grammars/tree-sitter-gn.git")))
+
