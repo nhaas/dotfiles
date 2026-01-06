@@ -72,9 +72,8 @@ bsp/qsee/errorCodesDict.txt
 securemsm/tzt/uefi/build_TZTModulePkg.log
 securemsm/tzt/uefi/Conf
 **/*AANAA/
-securemsm/trustzone/qsee/include/
 securemsm/tzt/uefi/TZTModulePkg/sdm845Pkg/Application/
-securemsm/trustzone/qsee/include/*.h
+securemsm/trustzone/qsee/include/[CI]*.h
 **/idl/**/*.h
 securemsm/unifiedcrypto/test/inc/cavp*
 securemsm/secrsa/test/inc/cavp*
