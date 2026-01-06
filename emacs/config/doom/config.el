@@ -148,7 +148,6 @@
 
 ;;;; Replace all at point
 ;; Grabs the symbol under point, prompts for a replacement string, and then does the replacement through the buffer. Point moves to original symbol (appears not to move in most instances). Borrowed from 'Isearch with symbol'.
-;; TODO: Point to does not always return to its original place before invokation.
 (defun nh/replace-all-symbol-current-buffer (x &optional partailp backward)
   "Grabs the symbol under point, prompts for a replacement
 string, and then does the replacement through the buffer."
@@ -183,7 +182,8 @@ string, and then does the replacement through the buffer."
         (message "No symbol at point")
       (goto-char (1- to))
       ;; Once we have symbol, do the replacement
-      (replace-string sym x t (point-min) (point-max)))))
+      (save-excursion
+        (replace-string sym x t (point-min) (point-max))))))
 
 (define-key search-map "r" 'nh/replace-all-symbol-current-buffer) ;; "M-s r"
 
