@@ -132,10 +132,6 @@ powerful frameworks like Doom or Spacemacs.
 9) [ ] Emacs 28
    - [ ] =undo-redo=. What's that all about?
 
-** Doom?
-
-** Straight.el?
-
 ** Doom
 
 *** Introduction
@@ -143,7 +139,7 @@ powerful frameworks like Doom or Spacemacs.
 Doom is a configuration framework for GNU Emacs tailored for Emacs bankruptcy veterans who want less framework in their frameworks, a modicum of stability (and reproducibility) from their package manager, and the performance of a hand rolled config (or better). It can be a foundation for your own config or a resource for Emacs enthusiasts to learn more about our favorite operating system.
 #+end_quote
 
-Doom does things differently as a bit more hands-off. In exchange for less fine-tune control over your configuration, you can leverage the knowledge and work of many others.
+Doom does things differently and is a bit more hands-off. In exchange for less fine-tune control over your configuration, you can leverage the knowledge and work of many others.
 
 There is no "stable" branch and I don't know how often releases are made, so I have included it as a submodule to this repository for stability.
 
@@ -160,14 +156,53 @@ At this time, Doom requires the following to work properly:
 4) GNU =find=
 5) OPTIONAL: fd 7.3.0+ (improves file indexing performance for some commands)
 
-*** TODO-list
-- [ ] evil-surround not recognizing ("<" . ">") pairs?
-- [ ] Doom modules `use-package` :hook not working for ibuffer-hook (group buffers by projectile root)
-- [ ] Point does not always return to original place before invokation of my-replace-all
-
-** Straight.el?
-
 * Miscellaneous
+
+** Separating work and personal
+When working on both personal and professional projects, it’s common to need different Git usernames and emails. Git allows you to manage multiple identities efficiently without constantly reconfiguring. This method automatically applies different user settings based on the repository’s directory.
+
+Steps:
+1) Edit your global config (~/.gitconfig):
+#+begin_quote
+[user]
+name = John Doe
+email = john.doe@company.com
+#+end_quote
+2) Create the personal config (~/.gitconfig-personal):
+#+begin_quote
+[user]
+name = John Doe
+email = personal@example.com
+
+[includeIf "gitdir:~/personal/"]
+path = ~/.gitconfig-personal
+#+end_quote
+Any repo inside ~/personal/ will now use your personal identity, while others use your work one.
+
+SSH Key-Based Switching
+
+Configure SSH keys to avoid authentication conflicts.
+
+Steps:
+1) Generate keys:
+#+begin_quote
+ssh-keygen -t rsa -C "work@example.com" -f ~/.ssh/id_rsa_work
+ssh-keygen -t rsa -C "personal@example.com" -f ~/.ssh/id_rsa_personal
+#+end_quote
+2) Edit ~/.ssh/config:
+#+begin_quote
+Host github.company.com
+HostName github.company.com
+User git
+IdentityFile ~/.ssh/id_rsa_work
+
+Host github.com
+HostName github.com
+User git
+IdentityFile ~/.ssh/id_rsa_personal
+#+end_quote
+
+** GitHub workarounds
 SSH connections to =github.com= appear to be completely blocked by the firewall. Only HTTPS
 connections are allowed for =push= / =pull=. For =push= ing to this repo, you will need a [[https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token][Personal
 Access Token (PAT)]] because username/password are disallowed for security reasons. Substitute the PAT
