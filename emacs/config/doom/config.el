@@ -45,6 +45,8 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Documents/org/")
 
+;; QGenie support
+(load "/prj/qct/coredev/hexagon/sitelinks/arch/pkg/codewise/x86_64/main/elisp/emacs.codewise.el")
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
